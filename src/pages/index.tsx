@@ -1,7 +1,7 @@
+import styles from "@/styles/Home.module.css";
+import { Geist, Geist_Mono } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,8 +44,7 @@ export default function Home() {
           <div className={styles.ctas}>
             <a
               className={styles.primary}
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
+              href="/sign-up"
               rel="noopener noreferrer"
             >
               <Image
@@ -55,7 +54,7 @@ export default function Home() {
                 width={20}
                 height={20}
               />
-              Deploy now
+              Sign up
             </a>
             <a
               href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
