@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { LoadingButton } from "@mui/lab";
 import { Box, Container, Stack, TextField } from "@mui/material";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -15,6 +16,7 @@ const schema = yup
   .required();
 
 export default function SignInPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -26,11 +28,15 @@ export default function SignInPage() {
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
       const token = await executeRecaptcha("sign_in");
-      await axiosClient.post(`/auth/sign-in`, data, {
+      const response = await axiosClient.post(`/auth/sign-in`, data, {
         headers: {
           "x-captcha-token": token,
         },
       });
+
+      if (response.status === 200) {
+        router.push("/");
+      }
     } catch (error) {
       console.error("Error during sign-in:", error);
     }
