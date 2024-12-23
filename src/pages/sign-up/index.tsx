@@ -38,7 +38,12 @@ export default function SignUpPage() {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: {
+    nickname: string;
+    email: string;
+    password: string;
+    gender?: string;
+  }) => {
     try {
       const token = await executeRecaptcha("sign_up");
       const response = await axiosClient.post(`/auth/sign-up`, data, {

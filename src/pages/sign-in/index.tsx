@@ -23,7 +23,7 @@ export default function SignInPage() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: { email: string; password: string }) => {
     try {
       const token = await executeRecaptcha("sign_in");
       await axiosClient.post(`/auth/sign-in`, data, {
