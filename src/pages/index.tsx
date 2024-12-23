@@ -2,6 +2,7 @@ import styles from "@/styles/Home.module.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +43,7 @@ export default function Home() {
           </ol>
 
           <div className={styles.ctas}>
-            <a
+            <Link
               className={styles.primary}
               href="/sign-up"
               rel="noopener noreferrer"
@@ -55,7 +56,7 @@ export default function Home() {
                 height={20}
               />
               Sign up
-            </a>
+            </Link>
             <a
               href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
               target="_blank"
