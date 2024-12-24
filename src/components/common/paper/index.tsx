@@ -29,7 +29,7 @@ const Paper: React.FC<PaperProps> = ({
       align="center"
       spacing={4}
       className={clsxm(
-        "p-6 border border-neutral-300 rounded-lg bg-white",
+        "p-6 border border-neutral-400 dark:border-neutral-600 rounded-lg bg-paper-light dark:bg-paper-dark",
         shadowClasses[shadow],
         className
       )}

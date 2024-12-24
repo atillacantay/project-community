@@ -1,102 +1,76 @@
 import type { Config } from "tailwindcss";
-import colors from "tailwindcss/colors";
 
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#588c7f", // Base primary color
-          50: "#e5f2ef", // Lightest shade
-          100: "#cce6df",
-          200: "#99ccb9",
-          300: "#66b393",
-          400: "#33996d",
-          500: "#588c7f", // Default
-          600: "#457067",
-          700: "#345450",
-          800: "#233839",
-          900: "#121c22", // Darkest shade
+          light: "#6366f1", // Light mode için birincil renk
+          DEFAULT: "#4f46e5", // Varsayılan
+          dark: "#4338ca", // Dark mode için birincil renk
         },
         secondary: {
-          DEFAULT: "#8c6158",
-          100: "#e8dfde",
-          200: "#d1c0bc",
-          300: "#baa09b",
-          400: "#a38179",
-          500: "#8c6158",
-          600: "#704e46",
-          700: "#543a35",
-          800: "#382723",
-          900: "#1c1312",
+          light: "#fbbf24",
+          DEFAULT: "#f59e0b",
+          dark: "#d97706",
         },
         neutral: {
-          DEFAULT: colors.gray[500],
-          50: colors.gray[50],
-          100: colors.gray[100],
-          200: colors.gray[200],
-          300: colors.gray[300],
-          400: colors.gray[400],
-          500: colors.gray[500],
-          600: colors.gray[600],
-          700: colors.gray[700],
-          800: colors.gray[800],
-          900: colors.gray[900],
+          light: "#f3f4f6",
+          DEFAULT: "#e5e7eb",
+          dark: "#374151",
         },
-        success: {
-          DEFAULT: "#4caf50",
-          50: "#e8f5e9",
-          100: "#c8e6c9",
-          200: "#a5d6a7",
-          300: "#81c784",
-          400: "#66bb6a",
-          500: "#4caf50",
-          600: "#43a047",
-          700: "#388e3c",
-          800: "#2e7d32",
-          900: "#1b5e20",
+        background: {
+          light: "#ffffff",
+          DEFAULT: "#f9fafb",
+          dark: "#1f2937",
         },
-        warning: {
-          DEFAULT: "#ff9800",
-          50: "#fff3e0",
-          100: "#ffe0b2",
-          200: "#ffcc80",
-          300: "#ffb74d",
-          400: "#ffa726",
-          500: "#ff9800",
-          600: "#fb8c00",
-          700: "#f57c00",
-          800: "#ef6c00",
-          900: "#e65100",
+        paper: {
+          light: "#ffffff",
+          DEFAULT: "#f8fafc",
+          dark: "#2d3748",
         },
-        danger: {
-          DEFAULT: "#e53935",
-          50: "#fcebeb",
-          100: "#fad7d7",
-          200: "#f5b0ae",
-          300: "#ef8886",
-          400: "#ea615d",
-          500: "#e53935",
-          600: "#b72e2a",
-          700: "#892220",
-          800: "#5c1715",
-          900: "#2e0b0b",
+        text: {
+          light: "#111827",
+          DEFAULT: "#374151",
+          dark: "#e5e7eb",
         },
-        info: {
-          DEFAULT: "#2196f3",
-          50: "#e3f2fd",
-          100: "#bbdefb",
-          200: "#90caf9",
-          300: "#64b5f6",
-          400: "#42a5f5",
-          500: "#2196f3",
-          600: "#1e88e5",
-          700: "#1976d2",
-          800: "#1565c0",
-          900: "#0d47a1",
+        accent: {
+          light: "#14b8a6",
+          DEFAULT: "#0d9488",
+          dark: "#0f766e",
+        },
+        error: {
+          light: "#f87171",
+          DEFAULT: "#ef4444",
+          dark: "#dc2626",
         },
       },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"], // Ana yazı tipi
+        serif: ["Merriweather", "serif"], // Alternatif serif yazı tipi
+        mono: ["Source Code Pro", "monospace"], // Kod için monospaced yazı tipi
+      },
+      spacing: {
+        "128": "32rem",
+        "144": "36rem",
+      },
+      borderRadius: {
+        "4xl": "2rem",
+      },
+      boxShadow: {
+        light: "0 4px 6px rgba(0, 0, 0, 0.1)", // Light mode gölge
+        dark: "0 4px 6px rgba(0, 0, 0, 0.6)", // Dark mode gölge
+      },
+    },
+  },
+  variants: {
+    extend: {
+      backgroundColor: ["dark"], // Dark mode için arka plan rengi
+      textColor: ["dark"], // Dark mode için metin rengi
+      borderColor: ["dark"], // Dark mode için kenar rengi
+      boxShadow: ["dark"], // Dark mode için gölgeler
     },
   },
   plugins: [],

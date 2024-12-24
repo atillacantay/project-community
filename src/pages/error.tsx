@@ -11,15 +11,15 @@ export default function ErrorPage() {
       direction="vertical"
       justify="center"
       align="center"
-      className="min-h-screen text-center bg-neutral-100"
+      className="min-h-screen text-center"
     >
       <Paper className="mx-4">
-        <MdErrorOutline className="text-danger-400" style={{ fontSize: 64 }} />
+        <MdErrorOutline className="text-error" style={{ fontSize: 64 }} />
         <Typography as="h1" size="2xl" weight="bold">
           Oops! Something Went Wrong
         </Typography>
 
-        <Typography className="text-neutral-600">
+        <Typography>
           We are sorry for the inconvenience. Please try refreshing the page or
           go back to the previous page.
         </Typography>

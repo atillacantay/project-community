@@ -44,9 +44,8 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
             className={clsxm(
               "flex items-center space-x-3 p-2 rounded-md cursor-pointer border",
               value === option.value
-                ? "bg-primary-light border-primary text-primary-foreground"
-                : "bg-white border-neutral-300",
-              "hover:bg-neutral-100"
+                ? "bg-primary border-primary text-white hover:bg-primary/90"
+                : "bg-white border-neutral-300 hover:bg-neutral-100"
             )}
           >
             <input
@@ -66,7 +65,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
           </label>
         ))}
       </div>
-      {error && <p className="text-sm text-danger mt-1">{error}</p>}
+      {error && <p className="text-sm text-error mt-1">{error}</p>}
     </div>
   );
 };

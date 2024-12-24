@@ -43,7 +43,7 @@ const Typography: React.FC<TypographyProps> = ({
   return (
     <Tag
       className={clsxm(
-        "text-neutral-800",
+        "text-text-light dark:text-text-dark",
         sizeClasses[size],
         weightClasses[weight],
         alignClasses[align],

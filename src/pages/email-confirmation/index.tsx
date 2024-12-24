@@ -51,7 +51,7 @@ export default function EmailConfirmation() {
             Check Your Inbox
           </Typography>
 
-          <Typography align="center" className="text-neutral">
+          <Typography align="center" className="text-text-light/50">
             We have sent a confirmation email to your registered email
             address.Please open it and click the confirmation link to verify
             your account.

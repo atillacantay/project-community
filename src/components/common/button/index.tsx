@@ -21,13 +21,12 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      "bg-primary text-white hover:bg-primary-600 focus:outline-primary-400",
+      "bg-primary text-white hover:bg-primary/80 focus:outline-primary/50",
     secondary:
-      "bg-secondary text-white hover:bg-secondary-600 focus:outline-secondary-400",
-    danger:
-      "bg-danger-600 text-white hover:bg-danger-600 focus:outline-danger-400",
+      "bg-secondary text-white hover:bg-secondary/80 focus:outline-secondary/50",
+    danger: "bg-error text-white hover:bg-error/80 focus:outline-error/50",
     outline:
-      "bg-transparent border border-primary text-primary hover:bg-primary-100 focus:outline-primary-400",
+      "bg-transparent border border-primary text-primary hover:bg-primary/10 focus:outline-primary/50",
   };
 
   const sizeStyles = {

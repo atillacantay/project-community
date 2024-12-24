@@ -34,7 +34,7 @@ export const Input: React.FC<InputProps> = ({
             "w-full rounded-md border px-3 py-2 text-sm placeholder-neutral-400",
             icon ? "pl-10" : "",
             error
-              ? "border-danger focus:outline-danger focus:border-danger"
+              ? "border-error focus:outline-error focus:border-error"
               : "border-neutral-300 focus:outline-primary focus:border-primary",
             props.disabled ? "bg-neutral-100 cursor-not-allowed" : "",
             className
@@ -42,7 +42,7 @@ export const Input: React.FC<InputProps> = ({
           {...props}
         />
       </div>
-      {error && <p className="mt-1 text-sm text-danger">{error}</p>}
+      {error && <p className="mt-1 text-sm text-error">{error}</p>}
     </div>
   );
 };

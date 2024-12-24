@@ -123,10 +123,12 @@ export default function SignUpPage() {
               error={errors.password?.message}
               {...register("password")}
             />
-            <Button type="submit">Sign Up</Button>
+            <Button variant="primary" type="submit">
+              Sign Up
+            </Button>
           </Stack>
         </Stack>
-        <Typography size="sm" align="center" className="text-neutral mt-4">
+        <Typography size="sm" align="center" className="mt-4">
           Already have an account?{" "}
           <Link href="/sign-in" className="text-primary hover:underline">
             Sign In
