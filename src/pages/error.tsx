@@ -1,50 +1,33 @@
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import HomeIcon from "@mui/icons-material/Home";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Button } from "@/components/common/button";
+import Paper from "@/components/common/paper";
+import { Stack } from "@/components/common/stack";
+import Typography from "@/components/common/typography";
 import Link from "next/link";
+import { MdErrorOutline, MdHome } from "react-icons/md";
 
 export default function ErrorPage() {
   return (
-    <Container
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        textAlign: "center",
-        backgroundColor: "#f9f9f9",
-      }}
+    <Stack
+      direction="vertical"
+      justify="center"
+      align="center"
+      className="min-h-screen text-center bg-neutral-100"
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={2}
-        padding={3}
-        border="1px solid #ddd"
-        borderRadius="8px"
-        sx={{
-          backgroundColor: "#fff",
-          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <ErrorOutlineIcon style={{ fontSize: 64, color: "#ff6b6b" }} />
-        <Typography variant="h4" color="textPrimary">
+      <Paper className="mx-4">
+        <MdErrorOutline className="text-danger-400" style={{ fontSize: 64 }} />
+        <Typography as="h1" size="2xl" weight="bold">
           Oops! Something Went Wrong
         </Typography>
-        <Typography color="textSecondary">
+
+        <Typography className="text-neutral-600">
           We are sorry for the inconvenience. Please try refreshing the page or
           go back to the previous page.
         </Typography>
-        <Box display="flex" gap={2} marginTop={2}>
-          <Link href="/">
-            <Button variant="outlined" startIcon={<HomeIcon />}>
-              Go Home
-            </Button>
-          </Link>
-        </Box>
-      </Box>
-    </Container>
+
+        <Link href="/">
+          <Button icon={<MdHome />}>Home</Button>
+        </Link>
+      </Paper>
+    </Stack>
   );
 }

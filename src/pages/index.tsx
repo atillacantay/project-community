@@ -43,11 +43,7 @@ export default function Home() {
           </ol>
 
           <div className={styles.ctas}>
-            <Link
-              className={styles.primary}
-              href="/sign-up"
-              rel="noopener noreferrer"
-            >
+            <Link className={styles.primary} href="/sign-up">
               <Image
                 className={styles.logo}
                 src="/vercel.svg"
@@ -57,14 +53,9 @@ export default function Home() {
               />
               Sign up
             </Link>
-            <a
-              href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.secondary}
-            >
+            <Link href="/sign-out" className={styles.secondary}>
               Read our docs
-            </a>
+            </Link>
           </div>
         </main>
         <footer className={styles.footer}>

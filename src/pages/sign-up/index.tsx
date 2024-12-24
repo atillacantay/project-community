@@ -1,16 +1,14 @@
+import { Button } from "@/components/common/button";
+import { Input } from "@/components/common/input";
+import { RadioGroup } from "@/components/common/radio-group";
+import { Stack } from "@/components/common/stack";
+import Typography from "@/components/common/typography";
 import { executeRecaptcha } from "@/utils/recaptcha";
 import { axiosClient } from "@/utils/supabase/axios/client";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Container,
-  Stack,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -87,64 +85,53 @@ export default function SignUpPage() {
           content="https://ahali.vercel.app/static/signup-thumbnail.jpg"
         />
       </Head>
-      <div>
-        <Container maxWidth="md">
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-            <Stack spacing={4}>
-              <TextField
-                type="nickname"
-                placeholder="Nickname"
-                size="small"
-                error={!!errors.nickname}
-                helperText={errors.nickname?.message}
-                {...register("nickname")}
-              />
-              <TextField
-                type="email"
-                placeholder="Email"
-                size="small"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                {...register("email")}
-              />
-              <Controller
-                name="gender"
-                control={control}
-                render={({ field }) => (
-                  <ToggleButtonGroup
-                    {...field}
-                    exclusive
-                    size="small"
-                    color="primary"
-                    aria-label="Sex"
-                  >
-                    <ToggleButton value="female" aria-label="female toggle">
-                      Female
-                    </ToggleButton>
-                    <ToggleButton value="male" aria-label="male toggle">
-                      Male
-                    </ToggleButton>
-                    <ToggleButton value="other" aria-label="other toggle">
-                      Other
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                )}
-              />
+      <div className="container mx-auto">
+        <Stack as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Stack spacing={4} className="space-y-4">
+            <Input
+              type="nickname"
+              placeholder="Nickname"
+              error={errors.nickname?.message}
+              {...register("nickname")}
+            />
+            <Input
+              type="email"
+              placeholder="Email"
+              error={errors.email?.message}
+              {...register("email")}
+            />
+            <Controller
+              name="gender"
+              control={control}
+              render={({ field }) => (
+                <RadioGroup
+                  {...field}
+                  direction="horizontal"
+                  options={[
+                    { label: "female", value: "female" },
+                    { label: "male", value: "male" },
+                    { label: "other", value: "other" },
+                  ]}
+                  aria-label="Sex"
+                />
+              )}
+            />
 
-              <TextField
-                type="password"
-                placeholder="Password"
-                size="small"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                {...register("password")}
-              />
-              <LoadingButton variant="outlined" type="submit">
-                Sign Up
-              </LoadingButton>
-            </Stack>
-          </Box>
-        </Container>
+            <Input
+              type="password"
+              placeholder="Password"
+              error={errors.password?.message}
+              {...register("password")}
+            />
+            <Button type="submit">Sign Up</Button>
+          </Stack>
+        </Stack>
+        <Typography size="sm" align="center" className="text-neutral mt-4">
+          Already have an account?{" "}
+          <Link href="/sign-in" className="text-primary hover:underline">
+            Sign In
+          </Link>
+        </Typography>
       </div>
     </>
   );

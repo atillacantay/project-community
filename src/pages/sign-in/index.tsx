@@ -1,8 +1,9 @@
+import { Button } from "@/components/common/button";
+import { Input } from "@/components/common/input";
+import { Stack } from "@/components/common/stack";
 import { executeRecaptcha } from "@/utils/recaptcha";
 import { axiosClient } from "@/utils/supabase/axios/client";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoadingButton } from "@mui/lab";
-import { Box, Container, Stack, TextField } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -69,32 +70,24 @@ export default function SignInPage() {
           content="https://ahali.vercel.app/static/signin-thumbnail.jpg"
         />
       </Head>
-      <div>
-        <Container maxWidth="md">
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-            <Stack spacing={4}>
-              <TextField
-                type="email"
-                placeholder="Email"
-                size="small"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                {...register("email")}
-              />
-              <TextField
-                type="password"
-                placeholder="Password"
-                size="small"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                {...register("password")}
-              />
-              <LoadingButton variant="outlined" type="submit">
-                Sign In
-              </LoadingButton>
-            </Stack>
-          </Box>
-        </Container>
+      <div className="container mx-auto">
+        <Stack as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Stack spacing={4}>
+            <Input
+              type="email"
+              placeholder="Email"
+              error={errors.email?.message}
+              {...register("email")}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              error={errors.password?.message}
+              {...register("password")}
+            />
+            <Button type="submit">Sign In</Button>
+          </Stack>
+        </Stack>
       </div>
     </>
   );

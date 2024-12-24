@@ -1,6 +1,11 @@
-import EmailIcon from "@mui/icons-material/Email"; // Import an icon for email confirmation
-import { Box, Card, Container, Typography } from "@mui/material";
+import { Button } from "@/components/common/button";
+import Paper from "@/components/common/paper";
+import { Stack } from "@/components/common/stack";
+import Typography from "@/components/common/typography";
 import Head from "next/head";
+import Link from "next/link";
+import { HiMail } from "react-icons/hi";
+import { MdHome } from "react-icons/md";
 
 export default function EmailConfirmation() {
   return (
@@ -36,30 +41,27 @@ export default function EmailConfirmation() {
           content="https://ahali.vercel.app/static/email-confirmation-thumbnail.jpg"
         />
       </Head>
-      <Container maxWidth="sm">
-        <Card
-          sx={{
-            p: 4,
-            my: 5,
-            textAlign: "center",
-            boxShadow: 43,
-          }}
-        >
-          <Box display="flex" justifyContent="center" mb={2}>
-            <EmailIcon color="info" sx={{ fontSize: 50 }} />
-          </Box>
+      <div className="mx-auto max-w-lg">
+        <Paper className="mx-4 my-5">
+          <Stack justify="center" className="mb-2">
+            <HiMail fontSize={50} className="text-primary" />
+          </Stack>
 
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
+          <Typography as="h5" weight="bold" size="2xl" className="mb-4">
             Check Your Inbox
           </Typography>
 
-          <Typography color="textSecondary">
-            We have sent a confirmation email to your registered email address.
-            Please open it and click the confirmation link to verify your
-            account.
+          <Typography align="center" className="text-neutral">
+            We have sent a confirmation email to your registered email
+            address.Please open it and click the confirmation link to verify
+            your account.
           </Typography>
-        </Card>
-      </Container>
+
+          <Link href="/">
+            <Button icon={<MdHome />}>Home</Button>
+          </Link>
+        </Paper>
+      </div>
     </>
   );
 }

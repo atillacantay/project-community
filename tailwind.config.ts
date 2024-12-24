@@ -1,0 +1,103 @@
+import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
+
+export default {
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: "#588c7f", // Base primary color
+          50: "#e5f2ef", // Lightest shade
+          100: "#cce6df",
+          200: "#99ccb9",
+          300: "#66b393",
+          400: "#33996d",
+          500: "#588c7f", // Default
+          600: "#457067",
+          700: "#345450",
+          800: "#233839",
+          900: "#121c22", // Darkest shade
+        },
+        secondary: {
+          DEFAULT: "#8c6158",
+          100: "#e8dfde",
+          200: "#d1c0bc",
+          300: "#baa09b",
+          400: "#a38179",
+          500: "#8c6158",
+          600: "#704e46",
+          700: "#543a35",
+          800: "#382723",
+          900: "#1c1312",
+        },
+        neutral: {
+          DEFAULT: colors.gray[500],
+          50: colors.gray[50],
+          100: colors.gray[100],
+          200: colors.gray[200],
+          300: colors.gray[300],
+          400: colors.gray[400],
+          500: colors.gray[500],
+          600: colors.gray[600],
+          700: colors.gray[700],
+          800: colors.gray[800],
+          900: colors.gray[900],
+        },
+        success: {
+          DEFAULT: "#4caf50",
+          50: "#e8f5e9",
+          100: "#c8e6c9",
+          200: "#a5d6a7",
+          300: "#81c784",
+          400: "#66bb6a",
+          500: "#4caf50",
+          600: "#43a047",
+          700: "#388e3c",
+          800: "#2e7d32",
+          900: "#1b5e20",
+        },
+        warning: {
+          DEFAULT: "#ff9800",
+          50: "#fff3e0",
+          100: "#ffe0b2",
+          200: "#ffcc80",
+          300: "#ffb74d",
+          400: "#ffa726",
+          500: "#ff9800",
+          600: "#fb8c00",
+          700: "#f57c00",
+          800: "#ef6c00",
+          900: "#e65100",
+        },
+        danger: {
+          DEFAULT: "#e53935",
+          50: "#fcebeb",
+          100: "#fad7d7",
+          200: "#f5b0ae",
+          300: "#ef8886",
+          400: "#ea615d",
+          500: "#e53935",
+          600: "#b72e2a",
+          700: "#892220",
+          800: "#5c1715",
+          900: "#2e0b0b",
+        },
+        info: {
+          DEFAULT: "#2196f3",
+          50: "#e3f2fd",
+          100: "#bbdefb",
+          200: "#90caf9",
+          300: "#64b5f6",
+          400: "#42a5f5",
+          500: "#2196f3",
+          600: "#1e88e5",
+          700: "#1976d2",
+          800: "#1565c0",
+          900: "#0d47a1",
+        },
+      },
+    },
+  },
+  plugins: [],
+} satisfies Config;
