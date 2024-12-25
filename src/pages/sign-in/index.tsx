@@ -1,48 +1,10 @@
-import { Button } from "@/components/common/button";
-import { Input } from "@/components/common/input";
-import { Stack } from "@/components/common/stack";
-import { executeRecaptcha } from "@/utils/recaptcha";
-import { axiosClient } from "@/utils/supabase/axios/client";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { SignInForm } from "@/components/sign-in-form";
+import { Stack } from "@/components/ui/stack";
+import { BringToFront } from "lucide-react";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-
-const schema = yup
-  .object({
-    email: yup.string().email().required(),
-    password: yup.string().min(6).required(),
-  })
-  .required();
+import Link from "next/link";
 
 export default function SignInPage() {
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const onSubmit = async (data: { email: string; password: string }) => {
-    try {
-      const token = await executeRecaptcha("sign_in");
-      const response = await axiosClient.post(`/auth/sign-in`, data, {
-        headers: {
-          "x-captcha-token": token,
-        },
-      });
-
-      if (response.status === 200) {
-        router.push("/");
-      }
-    } catch (error) {
-      console.error("Error during sign-in:", error);
-    }
-  };
-
   return (
     <>
       <Head>
@@ -70,25 +32,29 @@ export default function SignInPage() {
           content="https://ahali.vercel.app/static/signin-thumbnail.jpg"
         />
       </Head>
-      <div className="container mx-auto">
-        <Stack as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Stack spacing={4}>
-            <Input
-              type="email"
-              placeholder="Email"
-              error={errors.email?.message}
-              {...register("email")}
-            />
-            <Input
-              type="password"
-              placeholder="Password"
-              error={errors.password?.message}
-              {...register("password")}
-            />
-            <Button type="submit">Sign In</Button>
-          </Stack>
+      <Stack
+        justify="center"
+        align="center"
+        spacing={6}
+        className="min-h-svh bg-muted p-6 md:p-10"
+      >
+        <Stack spacing={6} className="w-full max-w-sm">
+          <Link
+            href="/"
+            className="flex items-center gap-2 self-center font-medium"
+          >
+            <Stack
+              justify="center"
+              align="center"
+              className="size-6 rounded-md bg-primary text-primary-foreground"
+            >
+              <BringToFront className="size-4" />
+            </Stack>
+            Community
+          </Link>
+          <SignInForm />
         </Stack>
-      </div>
+      </Stack>
     </>
   );
 }

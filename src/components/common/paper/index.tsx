@@ -1,4 +1,4 @@
-import { clsxm } from "@/utils/clsx";
+import { cn } from "@/lib/utils";
 import { Stack, type StackProps } from "../stack";
 
 interface PaperProps extends StackProps {
@@ -28,7 +28,7 @@ const Paper: React.FC<PaperProps> = ({
       justify="center"
       align="center"
       spacing={4}
-      className={clsxm(
+      className={cn(
         "p-6 border border-neutral-400 dark:border-neutral-600 rounded-lg bg-paper-light dark:bg-paper-dark",
         shadowClasses[shadow],
         className

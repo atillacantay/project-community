@@ -1,11 +1,10 @@
-import { Button } from "@/components/common/button";
-import Paper from "@/components/common/paper";
-import { Stack } from "@/components/common/stack";
-import Typography from "@/components/common/typography";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Stack } from "@/components/ui/stack";
+import { Typography } from "@/components/ui/typography";
+import { Home, Mail } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
-import { HiMail } from "react-icons/hi";
-import { MdHome } from "react-icons/md";
 
 export default function EmailConfirmation() {
   return (
@@ -42,25 +41,28 @@ export default function EmailConfirmation() {
         />
       </Head>
       <div className="mx-auto max-w-lg">
-        <Paper className="mx-4 my-5">
-          <Stack justify="center" className="mb-2">
-            <HiMail fontSize={50} className="text-primary" />
-          </Stack>
+        <Card className="mx-4 my-5">
+          <CardContent className="flex flex-col items-center gap-6 pt-6 text-center">
+            <Stack justify="center" className="mb-2">
+              <Mail size={50} />
+            </Stack>
 
-          <Typography as="h5" weight="bold" size="2xl" className="mb-4">
-            Check Your Inbox
-          </Typography>
+            <Typography variant="h2">Check Your Inbox</Typography>
 
-          <Typography align="center" className="text-text-light/50">
-            We have sent a confirmation email to your registered email
-            address.Please open it and click the confirmation link to verify
-            your account.
-          </Typography>
+            <Typography variant="h4" affects="muted">
+              We have sent a confirmation email to your registered email
+              address. Please open it and click the confirmation link to verify
+              your account.
+            </Typography>
 
-          <Link href="/">
-            <Button icon={<MdHome />}>Home</Button>
-          </Link>
-        </Paper>
+            <Link href="/">
+              <Button>
+                <Home />
+                Home
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     </>
   );

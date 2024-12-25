@@ -9,7 +9,7 @@ export default function Document() {
           async
         />
       </Head>
-      <body className="bg-background-light dark:bg-background-dark">
+      <body className="bg-background">
         <Main />
         <NextScript />
       </body>

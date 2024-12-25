@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindAnimate from "tailwindcss-animate";
 
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -6,72 +7,53 @@ export default {
   theme: {
     extend: {
       colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
-          light: "#6366f1", // Light mode için birincil renk
-          DEFAULT: "#4f46e5", // Varsayılan
-          dark: "#4338ca", // Dark mode için birincil renk
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          light: "#fbbf24",
-          DEFAULT: "#f59e0b",
-          dark: "#d97706",
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
-        neutral: {
-          light: "#f3f4f6",
-          DEFAULT: "#e5e7eb",
-          dark: "#374151",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
-        background: {
-          light: "#ffffff",
-          DEFAULT: "#f9fafb",
-          dark: "#1f2937",
-        },
-        paper: {
-          light: "#ffffff",
-          DEFAULT: "#f8fafc",
-          dark: "#2d3748",
-        },
-        text: {
-          light: "#111827",
-          DEFAULT: "#374151",
-          dark: "#e5e7eb",
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          light: "#14b8a6",
-          DEFAULT: "#0d9488",
-          dark: "#0f766e",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
-        error: {
-          light: "#f87171",
-          DEFAULT: "#ef4444",
-          dark: "#dc2626",
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
-      },
-      fontFamily: {
-        sans: ["Inter", "sans-serif"], // Ana yazı tipi
-        serif: ["Merriweather", "serif"], // Alternatif serif yazı tipi
-        mono: ["Source Code Pro", "monospace"], // Kod için monospaced yazı tipi
-      },
-      spacing: {
-        "128": "32rem",
-        "144": "36rem",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        chart: {
+          "1": "hsl(var(--chart-1))",
+          "2": "hsl(var(--chart-2))",
+          "3": "hsl(var(--chart-3))",
+          "4": "hsl(var(--chart-4))",
+          "5": "hsl(var(--chart-5))",
+        },
       },
       borderRadius: {
-        "4xl": "2rem",
-      },
-      boxShadow: {
-        light: "0 4px 6px rgba(0, 0, 0, 0.1)", // Light mode gölge
-        dark: "0 4px 6px rgba(0, 0, 0, 0.6)", // Dark mode gölge
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },
-  variants: {
-    extend: {
-      backgroundColor: ["dark"], // Dark mode için arka plan rengi
-      textColor: ["dark"], // Dark mode için metin rengi
-      borderColor: ["dark"], // Dark mode için kenar rengi
-      boxShadow: ["dark"], // Dark mode için gölgeler
-    },
-  },
-  plugins: [],
+  plugins: [tailwindAnimate],
 } satisfies Config;

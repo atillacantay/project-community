@@ -1,4 +1,4 @@
-import { clsxm } from "@/utils/clsx";
+import { cn } from "@/lib/utils";
 
 export interface StackProps<T extends React.ElementType = "div"> {
   as?: T; // Customizable element type
@@ -26,8 +26,7 @@ export const Stack = <T extends React.ElementType = "div">({
   const Component = as || "div";
 
   const flexDirection = direction === "vertical" ? "flex-col" : "flex-row";
-  const spacingClass =
-    direction === "vertical" ? `space-y-${spacing}` : `space-x-${spacing}`;
+  const spacingClass = `gap-${spacing}`;
   const alignItems = {
     start: "items-start",
     center: "items-center",
@@ -45,7 +44,7 @@ export const Stack = <T extends React.ElementType = "div">({
 
   return (
     <Component
-      className={clsxm(
+      className={cn(
         "flex",
         flexDirection,
         spacingClass,
