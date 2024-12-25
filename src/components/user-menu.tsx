@@ -7,11 +7,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { axiosClient } from "@/utils/supabase/axios/client";
-import { useRouter } from "next/router";
 
 export function UserMenu() {
-  const router = useRouter();
-
   const handleSignOut = async () => {
     try {
       const response = await axiosClient.post(`/auth/sign-out`);
