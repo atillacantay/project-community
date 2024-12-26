@@ -1,24 +1,11 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Stack } from "@/components/ui/stack";
 import { Typography } from "@/components/ui/typography";
 import { CircleAlert, Home } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
 
-export default function Error({
-  error,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
-
+export default function Error() {
   return (
     <Stack
       direction="vertical"

@@ -22,8 +22,10 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { axiosClient } from "@/utils/axios/client";
 import { executeRecaptcha } from "@/utils/recaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -44,6 +46,7 @@ const genders = [
 ];
 
 export function SignUpForm() {
+  const [error, setError] = useState("");
   const router = useRouter();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -56,6 +59,8 @@ export function SignUpForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    setError("");
+
     try {
       const token = await executeRecaptcha("sign_up");
       const response = await axiosClient.post(`/auth/sign-up`, data, {
@@ -68,7 +73,11 @@ export function SignUpForm() {
         router.push("/email-confirmation");
       }
     } catch (error) {
-      console.error("Error during sign-up:", error);
+      if (error instanceof AxiosError) {
+        if (error.response?.data) {
+          setError(error.response.data?.message);
+        }
+      }
     }
   };
 
@@ -168,6 +177,7 @@ export function SignUpForm() {
                       </FormItem>
                     )}
                   />
+                  {error && <FormMessage>{error}</FormMessage>}
                   <Button type="submit" className="w-full">
                     Sign Up
                   </Button>

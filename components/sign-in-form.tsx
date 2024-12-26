@@ -23,7 +23,7 @@ import { executeRecaptcha } from "@/utils/recaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -35,7 +35,7 @@ const schema = z
   .required();
 
 export function SignInForm() {
-  const router = useRouter();
+  const [error, setError] = useState("");
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -45,6 +45,7 @@ export function SignInForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    setError("");
     try {
       const token = await executeRecaptcha("sign_in");
       const response = await axiosClient.post(`/auth/sign-in`, data, {
@@ -54,17 +55,12 @@ export function SignInForm() {
       });
 
       if (response.status === 200) {
-        router.push("/");
+        window.location.href = "/";
       }
     } catch (error) {
-      console.log("Error during sign-in:", error);
-
       if (error instanceof AxiosError) {
         if (error.response?.data) {
-          form.setError("email", {
-            type: "manual",
-            message: error.response.data?.message,
-          });
+          setError(error.response.data?.message);
         }
       }
     }
@@ -105,7 +101,7 @@ export function SignInForm() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="email" {...field} />
+                          <Input placeholder="m@example.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -133,6 +129,7 @@ export function SignInForm() {
                       </FormItem>
                     )}
                   />
+                  {error && <FormMessage>{error}</FormMessage>}
                   <Button type="submit" className="w-full">
                     Sign In
                   </Button>
