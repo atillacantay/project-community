@@ -1,16 +1,14 @@
+import { getAuthUser } from "@/actions/user";
 import { ModeToggle } from "@/components/toggle-mode";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
 import { Typography } from "@/components/ui/typography";
 import { UserMenu } from "@/components/user-menu";
-import type { User } from "@supabase/supabase-js";
 import Link from "next/link";
 
-interface HeaderProps {
-  authUser: User | null;
-}
+export default async function Header() {
+  const authUser = await getAuthUser();
 
-export default async function Header({ authUser }: HeaderProps) {
   return (
     <header className="border-b border-border shadow-md">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">

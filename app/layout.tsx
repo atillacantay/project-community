@@ -1,18 +1,21 @@
-import { getAuthUser } from "@/actions/user";
 import { ThemeProvider } from "@/components/context/theme";
 import Header from "@/components/header";
+import { Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+
+const geistSans = Geist({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const authUser = await getAuthUser();
-
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <head>
         <Script
           strategy="afterInteractive"
@@ -27,7 +30,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-svh flex flex-col">
-            <Header authUser={authUser} />
+            <Header />
             <main className="flex flex-col flex-1">{children}</main>
           </div>
         </ThemeProvider>

@@ -18,9 +18,7 @@ export const getAuthUser = async () => {
 export const signOut = async () => {
   const supabase = await createClient();
   try {
-    const { error } = await supabase.auth.signOut({
-      scope: "local",
-    });
+    const { error } = await supabase.auth.signOut();
 
     if (error) {
       console.error(error);
