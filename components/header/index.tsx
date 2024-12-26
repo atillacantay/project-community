@@ -11,8 +11,6 @@ interface HeaderProps {
 }
 
 export default async function Header({ authUser }: HeaderProps) {
-  console.log(authUser);
-
   return (
     <header className="border-b border-border shadow-md">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
