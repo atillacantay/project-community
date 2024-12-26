@@ -71,14 +71,14 @@ export function SignInForm() {
   };
 
   return (
-    <Stack spacing={6}>
+    <Stack className="gap-6">
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>Sign In with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
-          <Stack spacing={6}>
+          <Stack className="gap-6">
             <Button variant="outline" className="w-full">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path
@@ -96,8 +96,8 @@ export function SignInForm() {
           </Stack>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6">
-              <Stack spacing={6}>
-                <Stack spacing={6}>
+              <Stack className="gap-6">
+                <Stack className="gap-6">
                   <FormField
                     control={form.control}
                     name="email"

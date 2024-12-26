@@ -24,17 +24,20 @@ export default async function Header() {
             </Link>
           </Stack>
 
-          <Stack direction="horizontal">
+          <Stack direction="horizontal" className="gap-4">
             <ModeToggle />
 
             {authUser ? (
               <UserMenu authUser={authUser} />
             ) : (
-              <Stack direction="horizontal">
+              <>
                 <Link href="/sign-in">
-                  <Button>Sign In</Button>
+                  <Button variant="outline">Sign In</Button>
                 </Link>
-              </Stack>
+                <Link href="/sign-up">
+                  <Button>Sign Up</Button>
+                </Link>
+              </>
             )}
           </Stack>
         </Stack>

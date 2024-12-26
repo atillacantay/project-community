@@ -22,10 +22,9 @@ export default function SignInPage() {
     <Stack
       justify="center"
       align="center"
-      spacing={6}
-      className="min-h-svh bg-muted p-6 md:p-10"
+      className="min-h-svh gap-6 bg-muted p-6 md:p-10"
     >
-      <Stack spacing={6} className="w-full max-w-sm">
+      <Stack className="w-full gap-6 max-w-sm">
         <Link
           href="/"
           className="flex items-center gap-2 self-center font-medium"
@@ -33,7 +32,7 @@ export default function SignInPage() {
           <Stack
             justify="center"
             align="center"
-            className="size-6 rounded-md bg-primary text-primary-foreground"
+            className="size-6 gap-4 rounded-md bg-primary text-primary-foreground"
           >
             <BringToFront className="size-4" />
           </Stack>

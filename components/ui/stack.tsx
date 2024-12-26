@@ -14,7 +14,6 @@ export interface StackProps<T extends React.ElementType = "div"> {
 export const Stack = <T extends React.ElementType = "div">({
   as,
   direction = "vertical",
-  spacing = 4,
   align = "stretch",
   justify = "start",
   wrap = false,
@@ -26,7 +25,6 @@ export const Stack = <T extends React.ElementType = "div">({
   const Component = as || "div";
 
   const flexDirection = direction === "vertical" ? "flex-col" : "flex-row";
-  const spacingClass = `gap-${spacing}`;
   const alignItems = {
     start: "items-start",
     center: "items-center",
@@ -47,7 +45,6 @@ export const Stack = <T extends React.ElementType = "div">({
       className={cn(
         "flex",
         flexDirection,
-        spacingClass,
         alignItems,
         justifyContent,
         wrap ? "flex-wrap" : "",
