@@ -23,12 +23,12 @@ export default function NotFound() {
             or go back to the previous page.
           </Typography>
 
-          <Link href="/">
-            <Button>
+          <Button asChild>
+            <Link href="/">
               <Home />
               Go Home
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardContent>
       </Card>
     </Stack>

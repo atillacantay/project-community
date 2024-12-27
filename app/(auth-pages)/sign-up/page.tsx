@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   title: "Sign Up - Ahali",
   description:
     "Join Ahali today! Sign up to access exclusive features and stay connected.",
-  alternates: { canonical: "https://ahali.vercel.app/sign-up" },
+  alternates: { canonical: "/sign-up" },
   openGraph: {
     title: "Sign Up - Ahali",
     description:
       "Join Ahali today! Sign up to access exclusive features and stay connected.",
-    url: "https://ahali.vercel.app/sign-up",
+    url: "/sign-up",
   },
 };
 

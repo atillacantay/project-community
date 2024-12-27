@@ -1,8 +1,14 @@
 import { ThemeProvider } from "@/components/context/theme";
 import Header from "@/components/header";
+import { Sidebar } from "@/components/sidebar";
+import { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://ahali.vercel.app"),
+};
 
 const geistSans = Geist({
   display: "swap",
@@ -31,7 +37,12 @@ export default async function RootLayout({
         >
           <div className="min-h-svh flex flex-col">
             <Header />
-            <main className="flex flex-col flex-1">{children}</main>
+            <main>
+              <div className="mx-auto max-w-screen-xl flex">
+                <Sidebar />
+                {children}
+              </div>
+            </main>
           </div>
         </ThemeProvider>
       </body>

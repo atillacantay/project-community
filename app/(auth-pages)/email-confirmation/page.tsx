@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   title: "Email Confirmation - Ahali",
   description:
     "We’ve sent you an email to confirm your account. Please check your inbox to proceed.",
-  alternates: { canonical: "https://ahali.vercel.app/email-confirmation" },
+  alternates: { canonical: "/email-confirmation" },
   openGraph: {
     title: "Email Confirmation - Ahali",
     description:
       "We’ve sent you an email to confirm your account. Please check your inbox to proceed.",
-    url: "https://ahali.vercel.app/email-confirmation",
+    url: "/email-confirmation",
   },
 };
 
@@ -36,12 +36,12 @@ export default function EmailConfirmation() {
             account.
           </Typography>
 
-          <Link href="/">
-            <Button>
+          <Button asChild>
+            <Link href="/">
               <Home />
               Home
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardContent>
       </Card>
     </div>
