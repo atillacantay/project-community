@@ -38,7 +38,7 @@ export default async function RootLayout({
           <div className="min-h-svh flex flex-col">
             <Header />
             <main>
-              <div className="mx-auto max-w-screen-xl flex">
+              <div className="mx-auto max-w-screen-xl flex py-10">
                 <Sidebar />
                 {children}
               </div>
