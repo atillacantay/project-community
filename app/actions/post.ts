@@ -60,7 +60,7 @@ export async function createPost(formData: FormData) {
 
   const newPost: TablesInsert<"posts"> = {
     title,
-    content,
+    content: JSON.parse(content),
     content_type: values["content_type"] as Enums<"content_type_enum">,
     slug,
   };

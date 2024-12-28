@@ -1,5 +1,6 @@
 "use client";
 
+import { signUp } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,22 +20,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Stack } from "@/components/ui/stack";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { axiosClient } from "@/utils/axios/client";
+import { signUpSchema, SignUpValues } from "@/lib/users/validations";
 import { executeRecaptcha } from "@/utils/recaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const schema = z.object({
-  username: z.string().min(4),
-  email: z.string().email(),
-  password: z.string().min(6),
-  gender: z.union([z.literal("female"), z.literal("male"), z.literal("other")]),
-});
 
 const genders = [
   {
@@ -47,9 +38,8 @@ const genders = [
 
 export function SignUpForm() {
   const [error, setError] = useState("");
-  const router = useRouter();
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<SignUpValues>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: "",
       email: "",
@@ -58,26 +48,21 @@ export function SignUpForm() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof schema>) => {
+  const onSubmit = async (values: SignUpValues) => {
     setError("");
+    const formData = new FormData();
 
-    try {
-      const token = await executeRecaptcha("sign_up");
-      const response = await axiosClient.post(`/auth/sign-up`, data, {
-        headers: {
-          "x-captcha-token": token,
-        },
-      });
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    });
+    const token = await executeRecaptcha("sign_up");
+    formData.append("captchaToken", token);
 
-      if (response.status === 200) {
-        router.push("/email-confirmation");
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response?.data) {
-          setError(error.response.data?.message);
-        }
-      }
+    const response = await signUp(formData);
+    if (response.error) {
+      setError(response.error);
     }
   };
 

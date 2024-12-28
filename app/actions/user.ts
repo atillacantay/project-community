@@ -1,6 +1,6 @@
 "use server";
 
-import { signInSchema } from "@/lib/users/validations";
+import { signInSchema, signUpSchema } from "@/lib/users/validations";
 import { createErrorResponse } from "@/utils/actions/action-response";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -82,4 +82,32 @@ export async function signIn(formData: FormData) {
   }
 
   redirect("/");
+}
+
+export async function signUp(formData: FormData) {
+  const values = Object.fromEntries(formData.entries());
+  const { email, password, username, gender } = signUpSchema.parse(values);
+  const captchaToken = values["captchaToken"] as string;
+
+  if (!captchaToken) {
+    return createErrorResponse("Captcha token is missing");
+  }
+
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      captchaToken,
+      data: { username, gender },
+    },
+  });
+
+  if (error) {
+    console.log(error);
+    return createErrorResponse(error.message);
+  }
+
+  redirect("/email-confirmation");
 }

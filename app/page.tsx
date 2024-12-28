@@ -1,6 +1,4 @@
-import { getPosts } from "@/actions/post";
-import PostCard from "@/components/post-card";
-import { Stack } from "@/components/ui/stack";
+import { PostList } from "@/components/post-list";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -18,13 +16,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const posts = await getPosts();
-
   return (
     <div className="w-full max-w-6xl px-6">
-      <Stack className="w-full space-y-6">
-        {posts && posts.map((post) => <PostCard key={post.id} {...post} />)}
-      </Stack>
+      <PostList />
     </div>
   );
 }
