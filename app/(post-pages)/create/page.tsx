@@ -1,5 +1,4 @@
 import { CreatePostForm } from "@/components/create-post-form";
-import { Stack } from "@/components/ui/stack";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,10 +18,10 @@ export const metadata: Metadata = {
 
 export default function CreatePost() {
   return (
-    <Stack align="center" className="min-h-svh p-6 md:p-10">
-      <div className="w-full max-w-xl">
+    <div className="w-full max-w-3xl py-8">
+      <div>
         <CreatePostForm />
       </div>
-    </Stack>
+    </div>
   );
 }

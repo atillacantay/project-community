@@ -30,7 +30,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const schema = z.object({
-  nickname: z.string().min(4),
+  username: z.string().min(4),
   email: z.string().email(),
   password: z.string().min(6),
   gender: z.union([z.literal("female"), z.literal("male"), z.literal("other")]),
@@ -51,7 +51,7 @@ export function SignUpForm() {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      nickname: "",
+      username: "",
       email: "",
       gender: "other",
       password: "",
@@ -111,10 +111,10 @@ export function SignUpForm() {
                 <Stack className="gap-6">
                   <FormField
                     control={form.control}
-                    name="nickname"
+                    name="username"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Nickname</FormLabel>
+                        <FormLabel>Username</FormLabel>
                         <FormControl>
                           <Input placeholder="user123" {...field} />
                         </FormControl>

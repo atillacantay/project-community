@@ -22,7 +22,7 @@ export default function SignInPage() {
     <Stack
       justify="center"
       align="center"
-      className="min-h-svh gap-6 bg-muted p-6 md:p-10"
+      className="min-h-svh gap-6 p-6 md:p-10"
     >
       <Stack className="w-full gap-6 max-w-sm">
         <Link

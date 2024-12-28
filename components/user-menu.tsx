@@ -14,7 +14,7 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ authUser }: UserMenuProps) {
-  const nickname: string = authUser.user_metadata["nickname"];
+  const username: string = authUser.user_metadata["username"];
 
   return (
     <DropdownMenu modal={false}>
@@ -23,7 +23,7 @@ export function UserMenu({ authUser }: UserMenuProps) {
           <Avatar className="size-6">
             <AvatarImage />
             <AvatarFallback className="capitalize">
-              {nickname.substring(0, 1)}
+              {username?.substring(0, 1)}
             </AvatarFallback>
           </Avatar>
           <span className="sr-only">User menu</span>

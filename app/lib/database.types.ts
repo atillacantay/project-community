@@ -38,6 +38,7 @@ export type Database = {
       posts: {
         Row: {
           content: Json | null
+          content_type: Database["public"]["Enums"]["content_type_enum"]
           created_at: string
           id: number
           slug: string
@@ -47,6 +48,7 @@ export type Database = {
         }
         Insert: {
           content?: Json | null
+          content_type: Database["public"]["Enums"]["content_type_enum"]
           created_at?: string
           id?: number
           slug: string
@@ -56,6 +58,7 @@ export type Database = {
         }
         Update: {
           content?: Json | null
+          content_type?: Database["public"]["Enums"]["content_type_enum"]
           created_at?: string
           id?: number
           slug?: string
@@ -65,15 +68,54 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          gender: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          gender?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          gender?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_posts_last_24_hours: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          content: Json | null
+          content_type: Database["public"]["Enums"]["content_type_enum"]
+          created_at: string
+          id: number
+          slug: string
+          title: string | null
+          updated_at: string
+          user_id: string
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      content_type_enum: "text" | "media"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -1,7 +1,33 @@
 "use server";
 
+import { signInSchema } from "@/lib/users/validations";
+import { createErrorResponse } from "@/utils/actions/action-response";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+
+/*
+export const getProfile = async () => {
+  const supabase = await createClient();
+  try {
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData.user) return;
+
+    const { data: profileData } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", authData.user.id)
+      .single();
+
+    if (!profileData) {
+      return;
+    }
+
+    return profileData;
+  } catch {
+    return null;
+  }
+};
+*/
 
 export const getAuthUser = async () => {
   const supabase = await createClient();
@@ -30,3 +56,30 @@ export const signOut = async () => {
 
   redirect("/");
 };
+
+export async function signIn(formData: FormData) {
+  const values = Object.fromEntries(formData.entries());
+  const { email, password } = signInSchema.parse(values);
+  const captchaToken = values["captchaToken"] as string;
+
+  if (!captchaToken) {
+    return createErrorResponse("Captcha token is missing");
+  }
+
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+    options: {
+      captchaToken,
+    },
+  });
+
+  if (error) {
+    console.log(error);
+    return createErrorResponse(error.message);
+  }
+
+  redirect("/");
+}

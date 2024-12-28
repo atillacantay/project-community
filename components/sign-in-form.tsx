@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,51 +19,43 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Stack } from "@/components/ui/stack";
-import { axiosClient } from "@/utils/axios/client";
+import { signInSchema, SignInValues } from "@/lib/users/validations";
 import { executeRecaptcha } from "@/utils/recaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const schema = z
-  .object({
-    email: z.string().email(),
-    password: z.string().min(6),
-  })
-  .required();
 
 export function SignInForm() {
   const [error, setError] = useState("");
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<SignInValues>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = form;
 
-  const onSubmit = async (data: z.infer<typeof schema>) => {
+  const onSubmit = async (values: SignInValues) => {
     setError("");
-    try {
-      const token = await executeRecaptcha("sign_in");
-      const response = await axiosClient.post(`/auth/sign-in`, data, {
-        headers: {
-          "x-captcha-token": token,
-        },
-      });
+    const formData = new FormData();
 
-      if (response.status === 200) {
-        window.location.href = "/";
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response?.data) {
-          setError(error.response.data?.message);
-        }
-      }
+    });
+    const token = await executeRecaptcha("sign_in");
+    formData.append("captchaToken", token);
+
+    const response = await signIn(formData);
+    if (response.error) {
+      setError(response.error);
     }
   };
 
@@ -91,11 +84,11 @@ export function SignInForm() {
             </div>
           </Stack>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
               <Stack className="gap-6">
                 <Stack className="gap-6">
                   <FormField
-                    control={form.control}
+                    control={control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -108,7 +101,7 @@ export function SignInForm() {
                     )}
                   />
                   <FormField
-                    control={form.control}
+                    control={control}
                     name="password"
                     render={({ field }) => (
                       <FormItem>
@@ -130,7 +123,11 @@ export function SignInForm() {
                     )}
                   />
                   {error && <FormMessage>{error}</FormMessage>}
-                  <Button type="submit" className="w-full">
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    loading={isSubmitting}
+                  >
                     Sign In
                   </Button>
                 </Stack>

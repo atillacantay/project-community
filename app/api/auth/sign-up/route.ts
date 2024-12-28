@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { nickname, email, password, gender } = await req.json();
+    const { username, email, password, gender } = await req.json();
     const headersList = await headers();
     const captchaToken = headersList.get("x-captcha-token");
     if (!captchaToken) {
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       password,
       options: {
         captchaToken,
-        data: { nickname, gender },
+        data: { username, gender },
       },
     });
     if (error) {

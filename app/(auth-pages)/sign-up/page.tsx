@@ -22,7 +22,7 @@ export default function SignUpPage() {
     <Stack
       justify="center"
       align="center"
-      className="min-h-svh gap-6 bg-muted p-6 md:p-10"
+      className="min-h-svh gap-6 p-6 md:p-10"
     >
       <Stack className="w-full max-w-sm gap-6">
         <Link
