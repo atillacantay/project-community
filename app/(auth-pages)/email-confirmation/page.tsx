@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 
 export default function EmailConfirmation() {
   return (
-    <div className="mx-auto max-w-lg">
-      <Card className="mx-4 my-5">
+    <Stack className="items-center md:w-2/3">
+      <Card>
         <CardContent className="flex flex-col items-center gap-6 pt-6 text-center">
           <Stack justify="center" className="mb-2">
             <Mail size={50} />
@@ -44,6 +44,6 @@ export default function EmailConfirmation() {
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </Stack>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { createPost } from "@/actions/post";
-import { RichTextEditor } from "@/components/rich-text-editor";
+import { Editor } from "@/components/rich-text/editor";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -95,7 +95,7 @@ export function CreatePostForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <RichTextEditor onChange={field.onChange} />
+                    <Editor onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

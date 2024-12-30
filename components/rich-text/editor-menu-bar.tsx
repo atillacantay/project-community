@@ -1,45 +1,23 @@
+import { LinkBubbleMenu } from "@/components/rich-text/link/link-bubble-menu";
+import { LinkEditPopover } from "@/components/rich-text/link/link-edit-popover";
+import { ToolbarButton } from "@/components/rich-text/toolbar-button";
 import { Stack } from "@/components/ui/stack";
-import { Toggle } from "@/components/ui/toggle";
 import { Editor } from "@tiptap/react";
 import {
   Bold,
   Code,
+  CodeXml,
+  ImageIcon,
   Italic,
   List,
   ListOrdered,
   Strikethrough,
 } from "lucide-react";
+import { useRef } from "react";
 
-const MenuButton = ({
-  onClick,
-  label,
-  isActive,
-  disabled,
-  children,
-}: {
-  onClick: () => void;
-  label?: string;
-  isActive: boolean;
-  disabled?: boolean;
-  children: React.ReactNode;
-}) => (
-  <Toggle
-    type="button"
-    defaultChecked={isActive}
-    onClick={onClick}
-    disabled={disabled}
-    title={label}
-    aria-label={label}
-  >
-    {children}
-  </Toggle>
-);
+export function EditorMenuBar({ editor }: { editor: Editor | null }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-export default function TextEditorMenuBar({
-  editor,
-}: {
-  editor: Editor | null;
-}) {
   if (!editor) return null;
 
   const buttons = [
@@ -49,6 +27,7 @@ export default function TextEditorMenuBar({
       icon: <Bold className="size-5" />,
       onClick: () => editor.chain().focus().toggleBold().run(),
       isActive: editor.isActive("bold"),
+      disabled: !editor.can().chain().focus().toggleBold().run(),
     },
     {
       key: "italic",
@@ -75,6 +54,14 @@ export default function TextEditorMenuBar({
       disabled: !editor.can().chain().focus().toggleCode().run(),
     },
     {
+      key: "code_blocck",
+      label: "Code Block",
+      icon: <CodeXml className="size-5" />,
+      onClick: () => editor.chain().focus().toggleCodeBlock().run(),
+      isActive: editor.isActive("codeBlock"),
+      disabled: !editor.can().chain().focus().toggleCodeBlock().run(),
+    },
+    {
       key: "bullet_list",
       label: "Bullet List",
       icon: <List className="size-5" />,
@@ -89,21 +76,63 @@ export default function TextEditorMenuBar({
       isActive: editor.isActive("orderedList"),
       disabled: !editor.can().chain().focus().toggleOrderedList().run(),
     },
+    {
+      key: "image",
+      label: "Image",
+      icon: <ImageIcon className="size-5" />,
+      onClick: () => fileInputRef.current?.click(),
+      isActive: editor.isActive("image"),
+    },
   ];
+
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    console.log(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const url = e.target?.result;
+        console.log("Image URL:", url);
+        if (url) {
+          editor
+            .chain()
+            .focus()
+            .setImage({ src: url as string })
+            .run();
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <Stack direction="horizontal" className="mb-2 flex gap-1">
       {buttons.map(({ key, label, icon, onClick, isActive, disabled }) => (
-        <MenuButton
+        <ToolbarButton
           key={key}
-          label={label}
           onClick={onClick}
-          isActive={isActive}
           disabled={disabled}
+          isActive={isActive}
+          tooltip={label}
+          aria-label={label}
         >
           {icon}
-        </MenuButton>
+        </ToolbarButton>
       ))}
+
+      <input
+        type="file"
+        id="file"
+        accept="image/*"
+        ref={fileInputRef}
+        hidden
+        onChange={onChangeFile}
+      />
+
+      <LinkBubbleMenu editor={editor} />
+      <LinkEditPopover editor={editor} />
     </Stack>
   );
 }

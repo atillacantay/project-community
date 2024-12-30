@@ -1,4 +1,5 @@
 import { getPost } from "@/actions/post";
+import { PostCard } from "@/components/post/post-card";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -46,5 +47,5 @@ export default async function Post({ params }: Props) {
 
   const post = await getPost(slug);
 
-  return <div>{post?.title}</div>;
+  return <div>{post && <PostCard {...post} noRedirect />}</div>;
 }

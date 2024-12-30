@@ -95,9 +95,8 @@ body {
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.grecaptcha-badge {
+  visibility: hidden !important;
 }
 
 @layer base {
@@ -109,11 +108,53 @@ a {
   }
 }
 
-.ProseMirror ul {
-  padding: 0 1rem;
-  @apply list-disc;
+@layer base {
+  ul,
+  ol {
+    list-style: revert;
+    padding: revert;
+    margin: 0 0 1rem 0;
+  }
+
+  ul p,
+  ol p {
+    margin: 0;
+  }
+
+  p {
+    margin: 0 0 1rem 0;
+  }
+
+  code {
+    padding: 0.25rem 0.3rem;
+    border-radius: var(--radius);
+    background: hsl(var(--accent));
+  }
+
+  pre {
+    white-space: pre-wrap;
+    background: hsl(var(--accent));
+    border-radius: var(--radius);
+    margin: 0 0 1rem 0;
+    padding: 0.75rem 1rem;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+  }
 }
-.ProseMirror ol {
-  padding: 0 2rem;
-  @apply list-decimal;
+
+.ProseMirror a,
+.rich-text-renderer a {
+  color: revert;
+  cursor: pointer;
+}
+
+.ProseMirror img {
+  margin: 0 0 1rem 0;
+}
+
+.ProseMirror .ProseMirror-selectednode {
+  outline: 2px solid hsl(var(--ring));
 }

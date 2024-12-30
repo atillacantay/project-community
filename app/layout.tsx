@@ -38,9 +38,9 @@ export default async function RootLayout({
           <div className="min-h-svh flex flex-col">
             <Header />
             <main>
-              <div className="mx-auto max-w-screen-xl flex py-10">
+              <div className="flex mx-auto max-w-screen-xl py-10">
                 <Sidebar />
-                {children}
+                <div className="w-full max-w-6xl px-6">{children}</div>
               </div>
             </main>
           </div>

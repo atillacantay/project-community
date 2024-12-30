@@ -1,5 +1,5 @@
 import { getPosts } from "@/actions/post";
-import PostCard from "@/components/post-card";
+import { PostCard } from "@/components/post/post-card";
 import { Stack } from "@/components/ui/stack";
 
 export async function PostList() {
