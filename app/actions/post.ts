@@ -18,7 +18,7 @@ export async function getPost(slug: string) {
 
   if (error) {
     console.log(error);
-    return null;
+    redirect("/not-found");
   }
 
   return data;
