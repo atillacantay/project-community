@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { NodeViewWrapper, type NodeViewProps } from "@tiptap/react";
 import { nanoid } from "nanoid";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { UploadReturnType } from "../../extensions/image";
 import { ImageOverlay } from "./image-overlay";
 
@@ -15,7 +15,6 @@ const MIN_WIDTH = 120;
 type ElementDimensions = { width: number; height: number };
 
 interface ImageState {
-  src: string;
   isServerUploading: boolean;
   imageLoaded: boolean;
   error: boolean;
@@ -28,7 +27,7 @@ const normalizeUploadResponse = (res: UploadReturnType) => ({
   path: typeof res === "string" ? null : res.path,
 });
 
-export function ImageViewBlock({
+function ImageViewBlockComponent({
   editor,
   node,
   selected,
@@ -42,15 +41,7 @@ export function ImageViewBlock({
   } = node.attrs;
   const uploadAttemptedRef = useRef(false);
 
-  const initSrc = useMemo(() => {
-    if (typeof initialSrc === "string") {
-      return initialSrc;
-    }
-    return initialSrc.src;
-  }, [initialSrc]);
-
   const [imageState, setImageState] = useState<ImageState>({
-    src: initSrc,
     isServerUploading: false,
     imageLoaded: false,
     error: false,
@@ -60,6 +51,12 @@ export function ImageViewBlock({
     imageState.naturalSize.width / imageState.naturalSize.height;
   const maxWidth = MAX_HEIGHT * aspectRatio;
 
+  const updateImageState = useCallback(
+    (updates: Partial<ImageState>) =>
+      setImageState((prev) => ({ ...prev, ...updates })),
+    []
+  );
+
   const handleImageLoad = useCallback(
     (ev: React.SyntheticEvent<HTMLImageElement>) => {
       const img = ev.target as HTMLImageElement;
@@ -67,11 +64,8 @@ export function ImageViewBlock({
         width: img.naturalWidth,
         height: img.naturalHeight,
       };
-      setImageState((prev) => ({
-        ...prev,
-        naturalSize: newNaturalSize,
-        imageLoaded: true,
-      }));
+
+      updateImageState({ naturalSize: newNaturalSize, imageLoaded: true });
 
       updateAttributes({
         width: newNaturalSize.width,
@@ -80,58 +74,55 @@ export function ImageViewBlock({
         title: img.title,
       });
     },
-    [updateAttributes]
+    [updateAttributes, updateImageState]
   );
 
-  const handleImageError = useCallback(() => {
-    setImageState((prev) => ({ ...prev, error: true, imageLoaded: true }));
-  }, []);
+  const handleImageError = useCallback(
+    () => updateImageState({ error: true, imageLoaded: true }),
+    [updateImageState]
+  );
+
+  const handleImageUpload = useCallback(async () => {
+    if (!initialSrc.startsWith("blob:") || uploadAttemptedRef.current) {
+      return;
+    }
+
+    uploadAttemptedRef.current = true;
+    const imageExtension = editor.options.extensions.find(
+      (ext) => ext.name === "image"
+    );
+    const { uploadFn } = imageExtension?.options ?? {};
+
+    if (!uploadFn) {
+      return;
+    }
+
+    try {
+      updateImageState({ isServerUploading: true });
+      const response = await fetch(initialSrc);
+      const blob = await response.blob();
+      const file = new File([blob], fileName, { type: blob.type });
+
+      const data = await uploadFn(file, node.attrs.id, editor);
+      const normalizedData = normalizeUploadResponse(data);
+
+      updateImageState({ isServerUploading: false, error: false });
+      updateAttributes(normalizedData);
+    } catch {
+      updateImageState({ error: true, isServerUploading: false });
+    }
+  }, [
+    editor,
+    initialSrc,
+    fileName,
+    node.attrs.id,
+    updateAttributes,
+    updateImageState,
+  ]);
 
   useEffect(() => {
-    const handleImage = async () => {
-      if (!initSrc.startsWith("blob:") || uploadAttemptedRef.current) {
-        return;
-      }
-
-      uploadAttemptedRef.current = true;
-      const imageExtension = editor.options.extensions.find(
-        (ext) => ext.name === "image"
-      );
-      const { uploadFn } = imageExtension?.options ?? {};
-
-      if (!uploadFn) {
-        return;
-      }
-
-      try {
-        setImageState((prev) => ({ ...prev, isServerUploading: true }));
-        const response = await fetch(initSrc);
-        const blob = await response.blob();
-        const file = new File([blob], fileName, { type: blob.type });
-
-        const data = await uploadFn(file, node.attrs.id, editor);
-        console.log(data);
-        const normalizedData = normalizeUploadResponse(data);
-        console.log(normalizedData);
-
-        setImageState((prev) => ({
-          ...prev,
-          id: data.id,
-          isServerUploading: false,
-        }));
-
-        updateAttributes(normalizedData);
-      } catch {
-        setImageState((prev) => ({
-          ...prev,
-          error: true,
-          isServerUploading: false,
-        }));
-      }
-    };
-
-    handleImage();
-  }, [editor, fileName, initSrc, updateAttributes]);
+    handleImageUpload();
+  }, [handleImageUpload]);
 
   const onRemoveImg = useCallback(() => {
     editor.commands.command(({ tr, dispatch }) => {
@@ -147,6 +138,11 @@ export function ImageViewBlock({
       return false;
     });
   }, [editor.commands]);
+
+  const onRetryImgUpload = useCallback(() => {
+    uploadAttemptedRef.current = false;
+    handleImageUpload();
+  }, [handleImageUpload]);
 
   return (
     <NodeViewWrapper
@@ -179,7 +175,7 @@ export function ImageViewBlock({
               )}
 
               <Image
-                src={imageState.src}
+                src={initialSrc}
                 alt={node.attrs.alt}
                 title={node.attrs.title}
                 width={imageState.naturalSize.width || MIN_WIDTH}
@@ -195,7 +191,12 @@ export function ImageViewBlock({
                 <Button variant="outline" size="sm" onClick={onRemoveImg}>
                   Remove
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={onRetryImgUpload}
+                >
                   Retry
                 </Button>
               </div>
@@ -208,3 +209,9 @@ export function ImageViewBlock({
     </NodeViewWrapper>
   );
 }
+export const ImageViewBlock = memo(
+  ImageViewBlockComponent,
+  (prevProps, nextProps) => {
+    return prevProps.node.attrs.id === nextProps.node.attrs.id;
+  }
+);
