@@ -1,5 +1,3 @@
-import { LinkBubbleMenu } from "@/components/rich-text/link/link-bubble-menu";
-import { LinkEditPopover } from "@/components/rich-text/link/link-edit-popover";
 import { ToolbarButton } from "@/components/rich-text/toolbar-button";
 import { Stack } from "@/components/ui/stack";
 import { Editor } from "@tiptap/react";
@@ -14,6 +12,8 @@ import {
   Strikethrough,
 } from "lucide-react";
 import { useRef } from "react";
+import { LinkBubbleMenu } from "./components/link/link-bubble-menu";
+import { LinkEditPopover } from "./components/link/link-edit-popover";
 
 export function EditorMenuBar({ editor }: { editor: Editor | null }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -85,26 +85,20 @@ export function EditorMenuBar({ editor }: { editor: Editor | null }) {
     },
   ];
 
-  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log(file);
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const url = e.target?.result;
-        console.log("Image URL:", url);
-        if (url) {
-          editor
-            .chain()
-            .focus()
-            .setImage({ src: url as string })
-            .run();
-        }
-      };
+    const insertImages = async () => {
+      const filesArray = Array.from(files);
+      editor.commands.setImages(
+        filesArray.map((file) => ({
+          src: file,
+        }))
+      );
+    };
 
-      reader.readAsDataURL(file);
-    }
+    await insertImages();
   };
 
   return (
@@ -124,11 +118,11 @@ export function EditorMenuBar({ editor }: { editor: Editor | null }) {
 
       <input
         type="file"
-        id="file"
         accept="image/*"
         ref={fileInputRef}
-        hidden
-        onChange={onChangeFile}
+        multiple
+        className="hidden"
+        onChange={handleFile}
       />
 
       <LinkBubbleMenu editor={editor} />

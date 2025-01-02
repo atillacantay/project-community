@@ -1,9 +1,9 @@
-import { LinkEditBlock } from "@/components/rich-text/link/link-edit-block";
-import { LinkPopoverBlock } from "@/components/rich-text/link/link-popover-block";
 import type { ShouldShowProps } from "@/components/rich-text/types";
 import type { Editor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react";
 import { useCallback, useState } from "react";
+import { LinkEditBlock } from "./link-edit-block";
+import { LinkPopoverBlock } from "./link-popover-block";
 
 interface LinkBubbleMenuProps {
   editor: Editor;

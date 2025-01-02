@@ -151,10 +151,16 @@ body {
   cursor: pointer;
 }
 
-.ProseMirror img {
+.ProseMirror .block-node {
   margin: 0 0 1rem 0;
 }
 
-.ProseMirror .ProseMirror-selectednode {
-  outline: 2px solid hsl(var(--ring));
+.rich-text-renderer img {
+  border-radius: var(--radius);
+  margin: 0 0 1rem 0;
+}
+
+.ProseMirror > p.is-editor-empty::before {
+  content: attr(data-placeholder);
+  @apply pointer-events-none float-left h-0 text-muted-foreground;
 }

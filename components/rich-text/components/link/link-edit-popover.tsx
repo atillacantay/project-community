@@ -1,4 +1,3 @@
-import { LinkEditBlock } from "@/components/rich-text/link/link-edit-block";
 import { ToolbarButton } from "@/components/rich-text/toolbar-button";
 import {
   Popover,
@@ -10,6 +9,7 @@ import type { Editor } from "@tiptap/react";
 import type { VariantProps } from "class-variance-authority";
 import { Link } from "lucide-react";
 import { useCallback, useState } from "react";
+import { LinkEditBlock } from "./link-edit-block";
 
 interface LinkEditPopoverProps extends VariantProps<typeof toggleVariants> {
   editor: Editor;

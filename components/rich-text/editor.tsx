@@ -1,10 +1,14 @@
 "use client";
 
 import { EditorMenuBar } from "@/components/rich-text/editor-menu-bar";
-import Image from "@tiptap/extension-image";
+import { createPublicStorageUrlFromPath } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
+import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { Image } from "./extensions/image";
 import Link from "./extensions/link";
+import { fileToBase64 } from "./utils";
 
 type EditorProps = {
   onChange: (content: string) => void;
@@ -13,7 +17,43 @@ type EditorProps = {
 
 export function Editor({ onChange, initialContent }: EditorProps) {
   const editor = useEditor({
-    extensions: [StarterKit, Image, Link],
+    extensions: [
+      StarterKit,
+      Link,
+      Image.configure({
+        allowedMimeTypes: ["image/*"],
+        maxFileSize: 5 * 1024 * 1024,
+        async uploadFn(file, id) {
+          const supabase = createClient();
+          const { data } = await supabase.storage
+            .from("post_images")
+            .upload(id, file, {
+              cacheControl: "3600",
+              upsert: true,
+            });
+
+          if (data) {
+            const publicUrl = createPublicStorageUrlFromPath(data.fullPath);
+            return { id: data.path, src: publicUrl, path: data.path };
+          }
+
+          const src = await fileToBase64(file);
+          return src;
+        },
+        async onImageRemoved({ path }) {
+          const supabase = createClient();
+          await supabase.storage.from("post_images").remove([path]);
+        },
+        onValidationError(errors) {
+          errors.forEach((error) => {
+            console.log(error);
+          });
+        },
+      }),
+      Placeholder.configure({
+        placeholder: "Write something ...",
+      }),
+    ],
     content: initialContent,
     onUpdate: ({ editor }) => {
       const stringifiedJSON = JSON.stringify(editor.getJSON());

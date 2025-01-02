@@ -20,3 +20,11 @@ export function toSlug(title: string): string {
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+function createPublicStorageBaseUrl() {
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_PATH}`;
+}
+
+export function createPublicStorageUrlFromPath(path: string) {
+  return `${createPublicStorageBaseUrl()}${path}`;
+}
