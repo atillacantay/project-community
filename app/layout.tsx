@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/context/theme";
 import Header from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Script from "next/script";
@@ -44,6 +45,7 @@ export default async function RootLayout({
               </div>
             </main>
           </div>
+          <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
     </html>

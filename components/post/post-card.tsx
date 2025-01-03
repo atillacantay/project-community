@@ -1,26 +1,30 @@
 import { EditorRenderer } from "@/components/rich-text/editor-renderer";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
-import { Tables } from "@/lib/database.types";
+import { Post } from "@/types/supabase";
 import Link from "next/link";
+import { PostVote } from "./post-vote";
 
-type PostCardProps = Tables<"posts"> & {
+type PostCardProps = Post & {
   noRedirect?: boolean;
 };
 
-export function PostCard({
-  slug,
-  title,
-  content,
-  content_type,
-  noRedirect,
-}: PostCardProps) {
+export function PostCard(props: PostCardProps) {
+  const { slug, title, content, content_type, noRedirect } = props;
+
+  const PostActions = () => (
+    <CardFooter className="p-2">
+      <PostVote {...props} />
+    </CardFooter>
+  );
+
   const PostCardContent = () => (
     <Card className="p-4">
       <Typography variant="h3" className="mb-4">
         {title}
       </Typography>
       {content_type === "text" && <EditorRenderer content={content} />}
+      <PostActions />
     </Card>
   );
 
@@ -34,6 +38,7 @@ export function PostCard({
         </Typography>
       </Link>
       {content_type === "text" && <EditorRenderer content={content} />}
+      <PostActions />
     </Card>
   );
 }

@@ -1,4 +1,4 @@
-import { Tables } from "@/lib/database.types";
+import { Post } from "@/types/supabase";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import { generateHTML } from "@tiptap/html";
@@ -7,7 +7,7 @@ import StarterKit from "@tiptap/starter-kit";
 import sanitizeHtml from "sanitize-html";
 
 type EditorRendererProps = {
-  content: Tables<"posts">["content"];
+  content: Post["content"];
 };
 
 export function EditorRenderer({ content }: EditorRendererProps) {

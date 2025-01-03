@@ -95,11 +95,60 @@ export type Database = {
         }
         Relationships: []
       }
+      votes: {
+        Row: {
+          created_at: string
+          id: number
+          post_id: number
+          user_id: string
+          vote_type: Database["public"]["Enums"]["vote_type"]
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          post_id: number
+          user_id?: string
+          vote_type: Database["public"]["Enums"]["vote_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          post_id?: number
+          user_id?: string
+          vote_type?: Database["public"]["Enums"]["vote_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "votes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      get_post_by_slug: {
+        Args: {
+          post_slug: string
+        }
+        Returns: {
+          id: number
+          title: string
+          content: Json
+          user_id: string
+          content_type: Database["public"]["Enums"]["content_type_enum"]
+          slug: string
+          created_at: string
+          updated_at: string
+          net_votes: number
+          user_vote_type: Database["public"]["Enums"]["vote_type"]
+        }[]
+      }
       get_posts_last_24_hours: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -113,9 +162,32 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_posts_with_votes: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: number
+          title: string
+          content: Json
+          user_id: string
+          content_type: Database["public"]["Enums"]["content_type_enum"]
+          slug: string
+          created_at: string
+          updated_at: string
+          net_votes: number
+          user_vote_type: Database["public"]["Enums"]["vote_type"]
+        }[]
+      }
+      handle_vote: {
+        Args: {
+          post_id: number
+          vote_type: Database["public"]["Enums"]["vote_type"]
+        }
+        Returns: string
+      }
     }
     Enums: {
       content_type_enum: "text" | "media"
+      vote_type: "upvote" | "downvote"
     }
     CompositeTypes: {
       [_ in never]: never

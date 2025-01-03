@@ -6,27 +6,26 @@ import { toSlug } from "@/lib/utils";
 import { createErrorResponse } from "@/utils/actions/action-response";
 import { createClient } from "@/utils/supabase/server";
 import { nanoid } from "nanoid";
-import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
+import { notFound, redirect } from "next/navigation";
 
 export async function getPost(slug: string) {
-  const supabase = await createClient();
+  const supabase = await createClient({ tags: ["post"] });
   const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("slug", slug)
+    .rpc("get_post_by_slug", { post_slug: slug })
     .single();
 
   if (error) {
     console.log(error);
-    redirect("/not-found");
+    notFound();
   }
 
   return data;
 }
 
 export async function getPosts() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.from("posts").select("*");
+  const supabase = await createClient({ tags: ["posts"] });
+  const { data, error } = await supabase.rpc("get_posts_with_votes");
 
   if (error) {
     console.log(error);
@@ -81,4 +80,27 @@ export async function createPost(formData: FormData) {
   }
 
   redirect("/");
+}
+
+export async function handleVote(
+  post_id: number,
+  vote_type: Enums<"vote_type">
+) {
+  const supabase = await createClient();
+
+  if (!post_id) {
+    return createErrorResponse("Missing post id");
+  }
+
+  const { error } = await supabase.rpc("handle_vote", {
+    post_id,
+    vote_type,
+  });
+
+  if (error) {
+    console.log(error);
+    return createErrorResponse("Vote failed");
+  }
+
+  revalidateTag("posts");
 }
