@@ -13,7 +13,7 @@ export function PostCard(props: PostCardProps) {
   const { slug, title, content, content_type, noRedirect } = props;
 
   const PostActions = () => (
-    <CardFooter className="p-2">
+    <CardFooter className="p-0 py-2">
       <PostVote {...props} />
     </CardFooter>
   );

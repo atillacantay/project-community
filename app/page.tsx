@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
+export default function Home() {
   return (
     <div>
       <PostList />

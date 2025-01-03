@@ -1,13 +1,15 @@
 "use client";
 
 import { handleVote } from "@/actions/post";
+import { getAuthUser } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
 import { Typography } from "@/components/ui/typography";
 import { Enums } from "@/lib/database.types";
 import { cn } from "@/lib/utils";
 import type { Post } from "@/types/supabase";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowBigDown, ArrowBigUp } from "lucide-react";
+import { redirect, RedirectType } from "next/navigation";
 import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
 
@@ -44,6 +46,11 @@ export function PostVote({ id, user_vote_type, net_votes }: PostVoteProps) {
   );
 
   async function handlePostVote(voteType: Enums<"vote_type">) {
+    const user = await getAuthUser();
+    if (!user) {
+      redirect("/sign-in", RedirectType.push);
+    }
+
     startTransition(() => {
       handleOptimisticVotes(voteType);
     });
@@ -53,34 +60,42 @@ export function PostVote({ id, user_vote_type, net_votes }: PostVoteProps) {
     }
   }
 
+  const isUpvote = optimisticVotes.user_vote_type === "upvote";
+  const isDownvote = optimisticVotes.user_vote_type === "downvote";
+
   return (
-    <Stack align="center" direction="horizontal" className="gap-2">
+    <Stack
+      align="center"
+      direction="horizontal"
+      className={cn(
+        "gap-2 border border-border rounded-full",
+        optimisticVotes.user_vote_type &&
+          `border-${optimisticVotes.user_vote_type}`
+      )}
+    >
       <Button
-        title="upvote"
-        variant="outline"
+        title="Upvote"
+        variant="ghost"
         size="icon"
-        className={cn(
-          optimisticVotes.user_vote_type === "upvote" &&
-            "text-upvote border-upvote"
-        )}
+        className={cn("rounded-full", isUpvote && "text-upvote border-upvote")}
         onClick={() => handlePostVote("upvote")}
       >
-        <ArrowUp />
+        <ArrowBigUp fill="currentColor" />
       </Button>
       <Typography variant="h4" affects="small">
         {optimisticVotes.net_votes}
       </Typography>
       <Button
-        title="downvote"
-        variant="outline"
+        title="Downvote"
+        variant="ghost"
         size="icon"
         className={cn(
-          optimisticVotes.user_vote_type === "downvote" &&
-            "text-downvote border-downvote"
+          "rounded-full",
+          isDownvote && "text-downvote border-downvote"
         )}
         onClick={() => handlePostVote("downvote")}
       >
-        <ArrowDown />
+        <ArrowBigDown fill="currentColor" />
       </Button>
     </Stack>
   );
