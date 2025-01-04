@@ -1,9 +1,9 @@
 "use client";
 
 import { EditorMenuBar } from "@/components/rich-text/editor-menu-bar";
+import { Stack } from "@/components/ui/stack";
 import { createPublicStorageUrlFromPath } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
-import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Image } from "./extensions/image";
@@ -50,9 +50,6 @@ export function Editor({ onChange, initialContent }: EditorProps) {
           });
         },
       }),
-      Placeholder.configure({
-        placeholder: "Write something ...",
-      }),
     ],
     content: initialContent,
     onUpdate: ({ editor }) => {
@@ -62,16 +59,19 @@ export function Editor({ onChange, initialContent }: EditorProps) {
     editorProps: {
       attributes: {
         class:
-          "min-h-[150px] cursor-text rounded-md border border-input shadow-sm px-4 py-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed",
+          "px-3 py-2 min-h-[100px] focus:outline-none disabled:cursor-not-allowed",
       },
     },
     immediatelyRender: false,
+    autofocus: true,
   });
 
   return (
-    <div>
-      <EditorMenuBar editor={editor} />
+    <Stack className="relative rounded-xl border border-input shadow-sm focus-within:ring-1 focus-within:ring-ring">
+      <div className="px-2 py-1">
+        <EditorMenuBar editor={editor} />
+      </div>
       <EditorContent editor={editor} />
-    </div>
+    </Stack>
   );
 }

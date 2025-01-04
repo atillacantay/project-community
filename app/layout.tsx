@@ -2,7 +2,10 @@ import { ThemeProvider } from "@/components/context/theme";
 import Header from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import { Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -21,8 +24,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" className={geistSans.className} suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={geistSans.className}
+      suppressHydrationWarning
+    >
       <head>
         <Script
           strategy="afterInteractive"
@@ -30,23 +40,27 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-background">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="min-h-svh flex flex-col">
-            <Header />
-            <main>
-              <div className="flex mx-auto max-w-screen-xl py-10">
-                <Sidebar />
-                <div className="w-full max-w-6xl px-6">{children}</div>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TooltipProvider>
+              <div className="min-h-svh flex flex-col">
+                <Header />
+                <main>
+                  <div className="flex mx-auto max-w-screen-xl py-10">
+                    <Sidebar />
+                    <div className="w-full max-w-6xl px-6">{children}</div>
+                  </div>
+                </main>
               </div>
-            </main>
-          </div>
-          <Toaster position="top-center" richColors />
-        </ThemeProvider>
+              <Toaster position="top-center" richColors />
+            </TooltipProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

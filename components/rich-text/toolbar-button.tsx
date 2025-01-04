@@ -3,7 +3,6 @@ import { Toggle } from "@/components/ui/toggle";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -42,15 +41,13 @@ export function ToolbarButton({
   }
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>{toggleButton}</TooltipTrigger>
-        <TooltipContent {...tooltipOptions}>
-          <Stack className="flex flex-col items-center text-center">
-            {tooltip}
-          </Stack>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>{toggleButton}</TooltipTrigger>
+      <TooltipContent {...tooltipOptions}>
+        <Stack className="flex flex-col items-center text-center">
+          {tooltip}
+        </Stack>
+      </TooltipContent>
+    </Tooltip>
   );
 }

@@ -102,7 +102,7 @@ export function EditorMenuBar({ editor }: { editor: Editor | null }) {
   };
 
   return (
-    <Stack direction="horizontal" className="mb-2 flex gap-1">
+    <Stack direction="horizontal" className="gap-1">
       {buttons.map(({ key, label, icon, onClick, isActive, disabled }) => (
         <ToolbarButton
           key={key}
