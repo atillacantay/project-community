@@ -4,7 +4,7 @@ import { EditorMenuBar } from "@/components/rich-text/editor-menu-bar";
 import { Stack } from "@/components/ui/stack";
 import { createPublicStorageUrlFromPath } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, type Extensions, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Image } from "./extensions/image";
 import Link from "./extensions/link";
@@ -13,13 +13,19 @@ import { fileToBase64 } from "./utils";
 type EditorProps = {
   onChange: (content: string) => void;
   initialContent?: string;
+  disabledExtensions?: string[];
 };
 
-export function Editor({ onChange, initialContent }: EditorProps) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link,
+export function Editor({
+  onChange,
+  initialContent,
+  disabledExtensions,
+}: EditorProps) {
+  const extensions: Extensions = [StarterKit, Link];
+  const isImageExtensionDisabled = disabledExtensions?.includes("image");
+
+  if (!isImageExtensionDisabled) {
+    extensions.push(
       Image.configure({
         allowedMimeTypes: ["image/*"],
         maxFileSize: 5 * 1024 * 1024,
@@ -49,8 +55,12 @@ export function Editor({ onChange, initialContent }: EditorProps) {
             console.log(error);
           });
         },
-      }),
-    ],
+      })
+    );
+  }
+
+  const editor = useEditor({
+    extensions,
     content: initialContent,
     onUpdate: ({ editor }) => {
       const stringifiedJSON = JSON.stringify(editor.getJSON());
@@ -69,7 +79,10 @@ export function Editor({ onChange, initialContent }: EditorProps) {
   return (
     <Stack className="relative rounded-xl border border-input shadow-sm focus-within:ring-1 focus-within:ring-ring">
       <div className="px-2 py-1">
-        <EditorMenuBar editor={editor} />
+        <EditorMenuBar
+          editor={editor}
+          disabledExtensions={disabledExtensions}
+        />
       </div>
       <EditorContent editor={editor} />
     </Stack>

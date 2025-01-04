@@ -15,7 +15,16 @@ import { useRef } from "react";
 import { LinkBubbleMenu } from "./components/link/link-bubble-menu";
 import { LinkEditPopover } from "./components/link/link-edit-popover";
 
-export function EditorMenuBar({ editor }: { editor: Editor | null }) {
+type EditorMenuBarProps = {
+  editor: Editor | null;
+  disabledExtensions?: string[];
+};
+
+export function EditorMenuBar({
+  editor,
+  disabledExtensions,
+}: EditorMenuBarProps) {
+  const isImageExtensionDisabled = disabledExtensions?.includes("image");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!editor) return null;
@@ -54,7 +63,7 @@ export function EditorMenuBar({ editor }: { editor: Editor | null }) {
       disabled: !editor.can().chain().focus().toggleCode().run(),
     },
     {
-      key: "code_blocck",
+      key: "code_block",
       label: "Code Block",
       icon: <CodeXml className="size-5" />,
       onClick: () => editor.chain().focus().toggleCodeBlock().run(),
@@ -103,27 +112,31 @@ export function EditorMenuBar({ editor }: { editor: Editor | null }) {
 
   return (
     <Stack direction="horizontal" className="gap-1">
-      {buttons.map(({ key, label, icon, onClick, isActive, disabled }) => (
-        <ToolbarButton
-          key={key}
-          onClick={onClick}
-          disabled={disabled}
-          isActive={isActive}
-          tooltip={label}
-          aria-label={label}
-        >
-          {icon}
-        </ToolbarButton>
-      ))}
+      {buttons
+        .filter((ext) => !disabledExtensions?.includes(ext.key))
+        .map(({ key, label, icon, onClick, isActive, disabled }) => (
+          <ToolbarButton
+            key={key}
+            onClick={onClick}
+            disabled={disabled}
+            isActive={isActive}
+            tooltip={label}
+            aria-label={label}
+          >
+            {icon}
+          </ToolbarButton>
+        ))}
 
-      <input
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        multiple
-        className="hidden"
-        onChange={handleFile}
-      />
+      {!isImageExtensionDisabled && (
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          multiple
+          className="hidden"
+          onChange={handleFile}
+        />
+      )}
 
       <LinkBubbleMenu editor={editor} />
       <LinkEditPopover editor={editor} />

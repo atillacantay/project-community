@@ -70,7 +70,10 @@ export function CreateCommentForm({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Editor onChange={field.onChange} />
+                <Editor
+                  onChange={field.onChange}
+                  disabledExtensions={["image"]}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
