@@ -11,6 +11,7 @@ export type ErrorType = { error: string };
  * It extracts the resolved value from a Promise and excludes any potential error type.
  * Used primarily to get supabase action return types.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AsyncReturnType<T extends (...args: any) => Promise<any>> = Exclude<
   PromiseType<ReturnType<T>>,
   ErrorType
