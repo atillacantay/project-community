@@ -1,7 +1,6 @@
 "use client";
 
 import { handleVote } from "@/actions/post";
-import { getAuthUser } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
 import { Typography } from "@/components/ui/typography";
@@ -13,9 +12,16 @@ import { redirect, RedirectType } from "next/navigation";
 import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
 
-type PostVoteProps = Post;
+type PostVoteProps = Post & {
+  isAuthenticated: boolean;
+};
 
-export function PostVote({ id, user_vote_type, net_votes }: PostVoteProps) {
+export function PostVote({
+  isAuthenticated,
+  id,
+  user_vote_type,
+  net_votes,
+}: PostVoteProps) {
   const [optimisticVotes, handleOptimisticVotes] = useOptimistic(
     {
       user_vote_type,
@@ -46,8 +52,7 @@ export function PostVote({ id, user_vote_type, net_votes }: PostVoteProps) {
   );
 
   async function handlePostVote(voteType: Enums<"vote_type">) {
-    const user = await getAuthUser();
-    if (!user) {
+    if (!isAuthenticated) {
       redirect("/sign-in", RedirectType.push);
     }
 
@@ -82,7 +87,7 @@ export function PostVote({ id, user_vote_type, net_votes }: PostVoteProps) {
       >
         <ArrowBigUp fill="currentColor" />
       </Button>
-      <Typography variant="h4" affects="small">
+      <Typography variant="span" affects="small">
         {optimisticVotes.net_votes}
       </Typography>
       <Button

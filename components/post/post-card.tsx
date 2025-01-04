@@ -1,7 +1,10 @@
+import { getAuthUser } from "@/actions/user";
 import { EditorRenderer } from "@/components/rich-text/editor-renderer";
+import { Button } from "@/components/ui/button";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
 import { Post } from "@/types/supabase";
+import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { PostVote } from "./post-vote";
 
@@ -9,12 +12,17 @@ type PostCardProps = Post & {
   noRedirect?: boolean;
 };
 
-export function PostCard(props: PostCardProps) {
+export async function PostCard(props: PostCardProps) {
+  const user = await getAuthUser();
   const { slug, title, content, content_type, noRedirect } = props;
 
   const PostActions = () => (
-    <CardFooter className="p-0 py-2">
-      <PostVote {...props} />
+    <CardFooter className="p-0 py-2 gap-4">
+      <PostVote isAuthenticated={Boolean(user)} {...props} />
+      <Button variant="outline" className="rounded-full">
+        <MessageCircle />
+        <Typography variant="span"></Typography>
+      </Button>
     </CardFooter>
   );
 

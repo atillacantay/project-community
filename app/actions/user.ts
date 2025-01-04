@@ -30,7 +30,7 @@ export const getProfile = async () => {
 */
 
 export const getAuthUser = async () => {
-  const supabase = await createClient();
+  const supabase = await createClient({ tags: ["user"] });
   try {
     const { data } = await supabase.auth.getUser();
     const { user } = data;
