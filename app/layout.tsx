@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
 const gabaritoSans = Gabarito({
   display: "swap",
+  subsets: ["latin"],
 });
 
 export default async function RootLayout({
