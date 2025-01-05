@@ -3,7 +3,7 @@ import type { Comment as CommentType } from "@/types/supabase";
 import { Comment } from "./comment";
 
 type CommentListProps = {
-  comments: CommentType[];
+  comments: CommentType[] | null;
 };
 
 export async function CommentList({ comments }: CommentListProps) {

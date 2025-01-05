@@ -10,7 +10,7 @@ export async function getComments(postId: number) {
   const supabase = await createClient({ tags: ["comments"] });
   const { data, error } = await supabase
     .from("comments")
-    .select("*, post:post_id(id, slug), user:user_id(*)")
+    .select("*, post:post_id(*), user:user_id(*)")
     .order("created_at", { ascending: false })
     .eq("post_id", postId);
 
