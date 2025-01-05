@@ -5,7 +5,6 @@ import { TablesInsert } from "@/lib/database.types";
 import { createErrorResponse } from "@/utils/actions/action-response";
 import { createClient } from "@/utils/supabase/server";
 import { revalidateTag } from "next/cache";
-import { notFound } from "next/navigation";
 
 export async function getComments(postId: number) {
   const supabase = await createClient({ tags: ["comments"] });
@@ -17,7 +16,6 @@ export async function getComments(postId: number) {
 
   if (error) {
     console.log(error);
-    notFound();
   }
 
   return data;

@@ -1,9 +1,9 @@
 import { Stack } from "@/components/ui/stack";
-import type { Comments } from "@/types/supabase";
+import type { Comment as CommentType } from "@/types/supabase";
 import { Comment } from "./comment";
 
 type CommentListProps = {
-  comments: Comments;
+  comments: CommentType[];
 };
 
 export async function CommentList({ comments }: CommentListProps) {

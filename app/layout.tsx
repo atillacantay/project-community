@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { Geist } from "next/font/google";
+import { Gabarito } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -14,9 +14,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ahali.vercel.app"),
 };
 
-const geistSans = Geist({
+const gabaritoSans = Gabarito({
   display: "swap",
-  subsets: ["latin"],
 });
 
 export default async function RootLayout({
@@ -30,7 +29,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={geistSans.className}
+      className={gabaritoSans.className}
       suppressHydrationWarning
     >
       <head>

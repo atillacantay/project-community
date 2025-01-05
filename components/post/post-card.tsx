@@ -14,15 +14,26 @@ type PostCardProps = Post & {
 
 export async function PostCard(props: PostCardProps) {
   const user = await getAuthUser();
-  const { slug, title, content, content_type, noRedirect } = props;
+  const { slug, title, content, content_type, comments_count, noRedirect } =
+    props;
 
-  const PostActions = () => (
+  const CommentButton = () => (
+    <Button variant="outline" className="rounded-full">
+      <MessageCircle />
+      <Typography variant="span">{comments_count}</Typography>
+    </Button>
+  );
+
+  const PostActions = ({ noRedirect }: { noRedirect?: boolean }) => (
     <CardFooter className="p-0 py-2 gap-4">
       <PostVote isAuthenticated={Boolean(user)} {...props} />
-      <Button variant="outline" className="rounded-full">
-        <MessageCircle />
-        <Typography variant="span"></Typography>
-      </Button>
+      {noRedirect ? (
+        <CommentButton />
+      ) : (
+        <Link href={`/post/${slug}`}>
+          <CommentButton />
+        </Link>
+      )}
     </CardFooter>
   );
 
@@ -32,7 +43,7 @@ export async function PostCard(props: PostCardProps) {
         {title}
       </Typography>
       {content_type === "text" && <EditorRenderer content={content} />}
-      <PostActions />
+      <PostActions noRedirect={noRedirect} />
     </Card>
   );
 
@@ -46,7 +57,7 @@ export async function PostCard(props: PostCardProps) {
         </Typography>
       </Link>
       {content_type === "text" && <EditorRenderer content={content} />}
-      <PostActions />
+      <PostActions noRedirect={noRedirect} />
     </Card>
   );
 }

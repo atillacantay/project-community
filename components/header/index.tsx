@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
 import { Typography } from "@/components/ui/typography";
 import { UserMenu } from "@/components/user-menu";
-import { Plus } from "lucide-react";
+import { Plus, Speech } from "lucide-react";
 import Link from "next/link";
 
 export default async function Header() {
@@ -19,11 +19,10 @@ export default async function Header() {
           align="center"
           className="py-4"
         >
-          <Stack align="center">
-            <Link href="/">
-              <Typography variant="h3">Ahali</Typography>
-            </Link>
-          </Stack>
+          <Link href="/" className="flex items-center gap-2">
+            <Speech size={32} />
+            <Typography variant="h3">Ahali</Typography>
+          </Link>
 
           <Stack direction="horizontal" className="gap-4">
             {authUser && (

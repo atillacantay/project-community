@@ -202,6 +202,7 @@ export type Database = {
           slug: string
           created_at: string
           updated_at: string
+          comments_count: number
           net_votes: number
           user_vote_type: Database["public"]["Enums"]["vote_type"]
         }[]
@@ -230,6 +231,7 @@ export type Database = {
           slug: string
           created_at: string
           updated_at: string
+          comments_count: number
           net_votes: number
           user_vote_type: Database["public"]["Enums"]["vote_type"]
         }[]
