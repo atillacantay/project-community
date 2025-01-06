@@ -78,7 +78,7 @@ export function Editor({
 
   return (
     <Stack className="relative rounded-xl border border-input shadow-sm focus-within:ring-1 focus-within:ring-ring">
-      <div className="px-2 py-1">
+      <div className="px-2 py-1 overflow-x-auto">
         <EditorMenuBar
           editor={editor}
           disabledExtensions={disabledExtensions}

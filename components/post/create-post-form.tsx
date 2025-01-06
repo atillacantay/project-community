@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Enums } from "@/lib/database.types";
 import { postSchema, type PostValues } from "@/lib/posts/validations";
+import { executeRecaptcha } from "@/utils/recaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,8 +51,10 @@ export function CreatePostForm() {
         formData.append(key, value);
       }
     });
+    const token = await executeRecaptcha("create_post");
 
     formData.append("content_type", activeTab);
+    formData.append("captchaToken", token);
 
     const response = await createPost(formData);
     if (response.error) {

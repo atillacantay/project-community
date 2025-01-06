@@ -4,6 +4,7 @@ import { Enums, TablesInsert } from "@/lib/database.types";
 import { postSchema } from "@/lib/posts/validations";
 import { toSlug } from "@/lib/utils";
 import { createErrorResponse } from "@/utils/actions/action-response";
+import { validateCaptcha } from "@/utils/recaptcha";
 import { createClient } from "@/utils/supabase/server";
 import { nanoid } from "nanoid";
 import { revalidateTag } from "next/cache";
@@ -51,35 +52,42 @@ export async function getDailyPosts() {
 export async function createPost(formData: FormData) {
   const values = Object.fromEntries(formData.entries());
   const { title, content } = postSchema.parse(values);
+  const captchaToken = values["captchaToken"] as string;
 
   // Generate slug from the title
   const slug = `${toSlug(title)}-${nanoid(6)}`;
 
-  const supabase = await createClient();
+  try {
+    await validateCaptcha(captchaToken);
 
-  const newPost: TablesInsert<"posts"> = {
-    title,
-    content: JSON.parse(content),
-    content_type: values["content_type"] as Enums<"content_type_enum">,
-    slug,
-  };
+    const newPost: TablesInsert<"posts"> = {
+      title,
+      content: JSON.parse(content),
+      content_type: values["content_type"] as Enums<"content_type_enum">,
+      slug,
+    };
 
-  const { data, error } = await supabase
-    .from("posts")
-    .insert(newPost)
-    .select()
-    .single();
+    const supabase = await createClient();
+    const { error } = await supabase
+      .from("posts")
+      .insert(newPost)
+      .select()
+      .single();
 
-  if (error) {
-    console.log(error);
-    return createErrorResponse(error.message);
+    if (error) {
+      console.log(error);
+      return createErrorResponse("An error occurred");
+    }
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : String(error || "An unknown error occurred");
+    console.error("Post creation error:", errorMessage);
+    return createErrorResponse(errorMessage);
   }
 
-  if (data) {
-    redirect(`/post/${data.slug}`);
-  }
-
-  redirect("/");
+  redirect(`/post/${slug}`);
 }
 
 export async function handleVote(

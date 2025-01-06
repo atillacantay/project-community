@@ -114,10 +114,6 @@ body {
     margin: 0;
   }
 
-  p {
-    margin: 0 0 1rem 0;
-  }
-
   code {
     padding: 0.25rem 0.3rem;
     border-radius: var(--radius);
@@ -142,6 +138,11 @@ body {
 .rich-text-renderer a {
   color: revert;
   cursor: pointer;
+}
+
+.ProseMirror p,
+.rich-text-editor p {
+  margin: 0 0 1rem 0;
 }
 
 .ProseMirror .block-node {
