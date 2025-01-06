@@ -189,7 +189,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_post_by_slug: {
+      get_post_details_by_slug: {
         Args: {
           post_slug: string
         }
@@ -197,7 +197,7 @@ export type Database = {
           id: number
           title: string
           content: Json
-          user_id: string
+          author: Json
           content_type: Database["public"]["Enums"]["content_type_enum"]
           slug: string
           created_at: string
@@ -220,20 +220,20 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_posts_with_votes: {
+      get_posts_with_details: {
         Args: Record<PropertyKey, never>
         Returns: {
           id: number
           title: string
           content: Json
-          user_id: string
+          author: Json
           content_type: Database["public"]["Enums"]["content_type_enum"]
           slug: string
           created_at: string
           updated_at: string
-          comments_count: number
           net_votes: number
           user_vote_type: Database["public"]["Enums"]["vote_type"]
+          comments_count: number
         }[]
       }
       handle_vote: {

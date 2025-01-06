@@ -34,11 +34,9 @@ export function Comment(props: CommentProps) {
           {username}
         </Link>
 
-        <time dateTime={created_at} title={createdAt.toString()}>
-          <Typography variant="h4" affects="muted">
-            {format.relativeTime(createdAt)}
-          </Typography>
-        </time>
+        <Typography variant="span" affects="muted">
+          {format.relativeTime(createdAt)}
+        </Typography>
       </Stack>
       <Stack className="ml-10">
         <EditorRenderer content={content} />

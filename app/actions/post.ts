@@ -12,7 +12,7 @@ import { notFound, redirect } from "next/navigation";
 export async function getPost(slug: string) {
   const supabase = await createClient({ tags: ["post"] });
   const { data, error } = await supabase
-    .rpc("get_post_by_slug", { post_slug: slug })
+    .rpc("get_post_details_by_slug", { post_slug: slug })
     .single();
 
   if (error) {
@@ -25,7 +25,9 @@ export async function getPost(slug: string) {
 
 export async function getPosts() {
   const supabase = await createClient({ tags: ["posts"] });
-  const { data, error } = await supabase.rpc("get_posts_with_votes");
+  const { data, error } = await supabase
+    .rpc("get_posts_with_details")
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.log(error);
