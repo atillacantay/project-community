@@ -162,7 +162,11 @@ export function SignUpForm() {
                       </FormItem>
                     )}
                   />
-                  {error && <FormMessage>{error}</FormMessage>}
+                  {error && (
+                    <FormMessage id="sign-up-error" className="m-0">
+                      {error}
+                    </FormMessage>
+                  )}
                   <Button type="submit" className="w-full">
                     Sign Up
                   </Button>
