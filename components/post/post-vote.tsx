@@ -27,7 +27,10 @@ export function PostVote({
       user_vote_type,
       net_votes,
     },
-    (state, voteType: Enums<"vote_type">) => {
+    (
+      state: { user_vote_type: Enums<"vote_type"> | null; net_votes: number },
+      voteType: Enums<"vote_type">
+    ) => {
       const { user_vote_type, net_votes } = state;
       if (user_vote_type === voteType) {
         return {
