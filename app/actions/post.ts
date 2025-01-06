@@ -7,7 +7,6 @@ import { createErrorResponse } from "@/utils/actions/action-response";
 import { validateCaptcha } from "@/utils/recaptcha";
 import { createClient } from "@/utils/supabase/server";
 import { nanoid } from "nanoid";
-import { revalidateTag } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
 export async function getPost(slug: string) {
@@ -75,8 +74,8 @@ export async function createPost(formData: FormData) {
       .single();
 
     if (error) {
-      console.log(error);
-      return createErrorResponse("An error occurred");
+      console.error("Supabase error while creating post:", error);
+      throw new Error("An error occurred while creating the post");
     }
   } catch (error) {
     const errorMessage =
@@ -88,27 +87,4 @@ export async function createPost(formData: FormData) {
   }
 
   redirect(`/post/${slug}`);
-}
-
-export async function handleVote(
-  post_id: number,
-  vote_type: Enums<"vote_type">
-) {
-  const supabase = await createClient();
-
-  if (!post_id) {
-    return createErrorResponse("Missing post id");
-  }
-
-  const { error } = await supabase.rpc("handle_vote", {
-    post_id,
-    vote_type,
-  });
-
-  if (error) {
-    console.log(error);
-    return createErrorResponse("Vote failed");
-  }
-
-  revalidateTag("posts");
 }

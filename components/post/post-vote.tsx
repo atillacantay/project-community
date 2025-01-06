@@ -1,6 +1,6 @@
 "use client";
 
-import { handleVote } from "@/actions/post";
+import { handleVote } from "@/actions/vote";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
 import { Typography } from "@/components/ui/typography";

@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/form";
 import { Stack } from "@/components/ui/stack";
 import { commentSchema, type CommentValues } from "@/lib/comments/validations";
+import { executeRecaptcha } from "@/utils/recaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 type CreateCommentFormProps = {
   postId: number;
@@ -49,12 +49,13 @@ export function CreateCommentForm({
       }
     });
 
+    const captchaToken = await executeRecaptcha("create_comment");
     formData.append("postId", postId.toString());
+    formData.append("captchaToken", captchaToken);
 
     const response = await createComment(formData);
     if (response?.error) {
       setError(response.error);
-      toast.error(response.error, { position: "bottom-right" });
       return;
     }
 
