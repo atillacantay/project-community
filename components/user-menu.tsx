@@ -7,15 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@supabase/supabase-js";
+import type { Profile } from "@/types/supabase";
 
 interface UserMenuProps {
-  authUser: User;
+  profile: Profile;
 }
 
-export function UserMenu({ authUser }: UserMenuProps) {
-  const username: string = authUser.user_metadata["username"];
-
+export function UserMenu({ profile }: UserMenuProps) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -23,7 +21,7 @@ export function UserMenu({ authUser }: UserMenuProps) {
           <Avatar className="size-6">
             <AvatarImage />
             <AvatarFallback className="capitalize">
-              {username?.substring(0, 1)}
+              {profile.username?.substring(0, 1)}
             </AvatarFallback>
           </Avatar>
           <span className="sr-only">User menu</span>

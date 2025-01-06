@@ -236,6 +236,17 @@ export type Database = {
           comments_count: number
         }[]
       }
+      get_profile: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          username: string
+          email: string
+          gender: string
+          created_at: string
+          updated_at: string
+        }[]
+      }
       handle_vote: {
         Args: {
           post_id: number

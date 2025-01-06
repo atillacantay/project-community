@@ -3,6 +3,7 @@ import { Stack } from "@/components/ui/stack";
 import { BringToFront } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Sign In - Ahali",
@@ -19,23 +20,29 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <Stack className="gap-6 items-center md:w-2/3">
-      <Stack className="w-full gap-6 max-w-sm">
-        <Link
-          href="/"
-          className="flex items-center gap-2 self-center font-medium"
-        >
-          <Stack
-            justify="center"
-            align="center"
-            className="size-6 gap-4 rounded-md bg-primary text-primary-foreground"
+    <>
+      <Script
+        strategy="afterInteractive"
+        src="https://accounts.google.com/gsi/client"
+      />
+      <Stack className="gap-6 items-center md:w-2/3">
+        <Stack className="w-full gap-6 max-w-sm">
+          <Link
+            href="/"
+            className="flex items-center gap-2 self-center font-medium"
           >
-            <BringToFront className="size-4" />
-          </Stack>
-          Community
-        </Link>
-        <SignInForm />
+            <Stack
+              justify="center"
+              align="center"
+              className="size-6 gap-4 rounded-md bg-primary text-primary-foreground"
+            >
+              <BringToFront className="size-4" />
+            </Stack>
+            Community
+          </Link>
+          <SignInForm />
+        </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 }

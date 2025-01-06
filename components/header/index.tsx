@@ -1,4 +1,4 @@
-import { getAuthUser } from "@/actions/user";
+import { getProfile } from "@/actions/user";
 import { ModeToggle } from "@/components/toggle-mode";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
@@ -8,7 +8,7 @@ import { Plus, Speech } from "lucide-react";
 import Link from "next/link";
 
 export default async function Header() {
-  const authUser = await getAuthUser();
+  const profile = await getProfile();
 
   return (
     <header className="border-b border-border shadow-md">
@@ -25,7 +25,7 @@ export default async function Header() {
           </Link>
 
           <Stack direction="horizontal" className="gap-4">
-            {authUser && (
+            {profile && (
               <Button asChild className="rounded-full">
                 <Link href="/create">
                   <Plus />
@@ -35,8 +35,8 @@ export default async function Header() {
             )}
             <ModeToggle />
 
-            {authUser ? (
-              <UserMenu authUser={authUser} />
+            {profile ? (
+              <UserMenu profile={profile} />
             ) : (
               <>
                 <Button asChild variant="outline">

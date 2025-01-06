@@ -28,3 +28,5 @@ export type Comment = Tables<"comments"> & {
   user: Tables<"profiles">;
   post: Tables<"posts">;
 };
+
+export type Profile = Tables<"profiles">;
